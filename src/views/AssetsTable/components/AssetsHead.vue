@@ -5,7 +5,7 @@
         <el-input v-model="form.id" placeholder="防抖查询" @input="onInput" v-debounce style="width: 200px"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="small" icon="el-icon-plus">新增</el-button>
+        <el-button type="primary" size="small" v-debounce @click="onBtnClick" icon="el-icon-plus">新增</el-button>
         <el-button type="primary" size="small" icon="el-icon-search">高级查询</el-button>
         <el-button type="primary" size="small" icon="el-icon-delete">批量删除</el-button>
         <el-button type="primary" size="small" icon="el-icon-edit">批量修改</el-button>
@@ -44,6 +44,10 @@ export default class AdminHead extends Vue implements Admin {
   // 搜索用的
   public onInput() {
     this.getAssets();
+  }
+  public onBtnClick(){
+    
+    console.log(1)
   }
   private created() {
     this.getAssets();

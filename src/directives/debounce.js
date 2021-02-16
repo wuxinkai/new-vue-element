@@ -19,11 +19,11 @@ const debounce = (fun = function () { }, delay = 800) => {
 };
 Vue.directive("debounce", {
   inserted: function (el, binding, vnode) {
-    debugger
     // vnode.componentOptions.listeners.input;
     // vnode.componentOptions.listeners.input.fns;
     // function(){}.prototype.fns = [];
     //如果是input
+
     if (vnode.componentOptions && vnode.componentOptions.tag == "el-input") {
       //得到原方法
       let Fns = vnode.componentOptions.listeners.input;

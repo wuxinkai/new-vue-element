@@ -5,6 +5,8 @@ import router from './router'
 import store from './store'
 
 import "./directives/debounce.js"; //防抖
+import "./plugins/element.js";
+import "./plugins/animate.js";
 // 引入样式
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'

@@ -80,18 +80,37 @@
       </el-table-column>
       <el-table-column prop="ASSET_A1_280" label="库存状态">
       </el-table-column>
+      <el-table-column label="操作" width="200">
+        <template slot-scope="scope">
+          <el-button type="info" size="mini" @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit">编辑</el-button>
+          <el-button type="danger" size="mini" @click="handleDel(scope.$index, scope.row)" icon="el-icon-delete">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
+
+    <!-- <AssetEdit ref="assetA1Edit" :formdata="page.selectData"></AssetEdit> -->
+    <mei-dialog ref="AssetEditDialog" width="40%" :nopadding="true" title="资产编辑">
+      777
+    </mei-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import AssetEdit from "./AssetEdit.vue";
 import service from "@/service/index";
 
-@Component({})
+@Component({
+  components: { AssetEdit },
+})
 export default class AdminContent extends Vue {
   @Prop() private tableAssetsData!: Array<object>;
-
+  //编辑功能
+  public handleEdit(column, row) {
+    this.$refs.AssetEditDialog.show();
+  }
+  //删除功能
+  public handleDel(column, row) {}
 }
 </script>
 
