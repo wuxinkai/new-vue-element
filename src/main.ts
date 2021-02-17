@@ -6,6 +6,7 @@ import store from './store'
 
 import "./directives/debounce.js"; //防抖
 import "./plugins/element.js";
+import "./directives/placeholder.js"; //为空提示
 import "./plugins/animate.js";
 // 引入样式
 import ElementUI from 'element-ui'

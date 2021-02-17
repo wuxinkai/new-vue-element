@@ -61,6 +61,6 @@ export default class Icon extends Vue{
 }
 
 .block {
-  flex: 0 0 50px;
+  flex:  ;
 }
 </style>

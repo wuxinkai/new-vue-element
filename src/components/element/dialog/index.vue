@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "meidialog",
+  name: "ysdialog",
   data: () => ({
     page: {
       dialogVisible: false,
@@ -54,9 +54,10 @@ export default {
   methods: {
     show() {
       this.page.dialogVisible = true;
-      debugger
+
       this.$nextTick(() => {
-        // console.log(this.$slots.default[0].componentInstance.$refs);
+
+        if (this.$slots.default[0].componentInstance == undefined) return
         const footer = this.$slots.default[0].componentInstance.$refs.footer;
         if (footer && footer.innerHTML) {
           //this.page.showfoot = true;
@@ -82,8 +83,13 @@ export default {
 
 <style lang="scss" scoped>
 .dialog {
+  /deep/ .el-dialog__header {
+    text-align: left;
+  }
   /deep/ .el-dialog__body {
     // max-height: 68vh;
+    
+    text-align: left;
     overflow: auto;
   }
 }

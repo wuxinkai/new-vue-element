@@ -9,31 +9,28 @@
             </template>
             <transition-group enter-active-class="animated fadeInDown">
               <template v-for="field in page.sysasseta1.fields">
-                <el-form-item v-if="field.SYS_ASSET_A1_140 == group" :key="field.AUTOID" :prop="field.SYS_ASSET_A1_160" :label="
-                    readonly
-                      ? field.SYS_ASSET_A1_50 + ':'
-                      : field.SYS_ASSET_A1_50
-                  ">
+                <el-form-item v-if="field.SYS_ASSET_A1_140 == group" :key="field.AUTOID" :prop="field.SYS_ASSET_A1_160" :label="readonly  ? field.SYS_ASSET_A1_50 + ':' : field.SYS_ASSET_A1_50 ">
                   <template v-if="readonly || field.readonly">
-                    <!-- 如果是关联表 -->
+                    <!-- 查看详情 -->
                     <template v-if="field.SYS_ASSET_A1_60">
+                      11
                       {{ form[`str${field.SYS_ASSET_A1_160}`] }}
                     </template>
                     <template v-else>
+                      22
                       {{ form[field.SYS_ASSET_A1_160] }}
                     </template>
                   </template>
+                  <!-- 编辑 -->
                   <template v-else>
-                    <el-input v-if="
-                        !field.SYS_ASSET_A1_60 &&
-                          field.SYS_ASSET_A1_170 != 'Date'
-                      " v-nulltext v-model="form[field.SYS_ASSET_A1_160]"></el-input>
-                    <el-date-picker v-if="
-                        !field.SYS_ASSET_A1_60 &&
-                          field.SYS_ASSET_A1_170 == 'Date'
-                      " v-model="form[field.SYS_ASSET_A1_160]" align="right" type="date" v-nulltext class="vWimp" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
+                    <!-- 处理文本框 -->
+                    <el-input v-if="field.SYS_ASSET_A1_170 == 'Text' "  v-model="form[field.SYS_ASSET_A1_160]"></el-input>
+                    <!-- 处理日期 -->
+                    <el-date-picker v-if="field.SYS_ASSET_A1_170 == 'Date'
+                      " v-model="form[field.SYS_ASSET_A1_160]" align="right" type="date" class="vWimp" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
                     </el-date-picker>
-                    <!-- <assetA1Ddl v-else-if="field.SYS_ASSET_A1_60" v-model="form[field.SYS_ASSET_A1_160]" :ref="`ddl${field.SYS_ASSET_A1_160}`" :sysAssetA1="field"></assetA1Ddl> -->
+                    <!-- 处理下拉选择 v-else-if -->
+                    <asset-ys-select v-if="field.SYS_ASSET_A1_170 == 'Select'" v-model="form[field.SYS_ASSET_A1_160]" :ref="`ddl${field.SYS_ASSET_A1_160}`" :sysAssetAItem="field"></asset-ys-select>
                   </template>
                 </el-form-item>
               </template>
@@ -55,8 +52,12 @@
 </template>
 
 <script>
-
+import AssetYsSelect from "./AssetYsSelect.vue";
+import FormList from "./json/form";  //form数据
 export default {
+  components: {
+    AssetYsSelect
+  },
   data() {
     return {
       //页面控制
@@ -77,7 +78,7 @@ export default {
   // inject: ["AssetA1", "thisdialog"],
   //外部属性
   props: {
-    formdata: {
+    formdata: { //赋值给
       type: Object,
       default() {
         return {};
@@ -94,8 +95,19 @@ export default {
   //内部方法
   methods: {
     async initPage() {
-       this.page.selectData = item;
-      // this.$refs.editDialog.show();
+      this.page.activeNames = ["基础数据", "出厂信息", "在用信息"]
+      this.page.loading = true
+      // console.log(this.form)
+      this.page.sysasseta1 = {
+        fields: FormList,
+        group: ["基础数据", "出厂信息", "在用信息"],
+      }
+
+      this.rules = this.getRules(this.page.sysasseta1.fields);
+      this.$nextTick(() => {
+        this.page.loading = false;
+        this.$refs.form.$el.List.remove("defhetght");
+      });
     },
     //动态创建验证规则 (字段集合)
     getRules(sysasseta1) {
@@ -109,10 +121,7 @@ export default {
       this.thisdialog.close();
     }
   },
-  //组件
-  components: {
-    // assetA1Ddl
-  },
+
   //初始化 异步加async await
   mounted() {
     this.initPage();

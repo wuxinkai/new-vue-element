@@ -16,12 +16,12 @@ Vue.use(Element);
 //   elLayout,
 //   elLayoutLeft,
 //   elLayoutMain,
-//   select,
-//   meidialog
+//   ysSelect,
+//   ysdialog
 // } from "../components/element/index";
 
 // Vue.use(Element);
-// Vue.use(select);
+// Vue.use(ysSelect);
 // Vue.use(selectTree);
 // Vue.use(pagination);
 // Vue.use(tree);
@@ -29,7 +29,7 @@ Vue.use(Element);
 // Vue.use(elLayout);
 // Vue.use(elLayoutLeft);
 // Vue.use(elLayoutMain);
-// Vue.use(meidialog);
+// Vue.use(ysdialog);
 
 import * as elEx from "../components/element/index";
 

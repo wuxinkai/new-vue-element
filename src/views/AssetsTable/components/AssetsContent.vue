@@ -74,7 +74,7 @@
       </el-table-column>
       <el-table-column prop="ASSET_A1_20" label="资产名称" width="180">
       </el-table-column>
-      <el-table-column prop="ASSET_A1_60" label="资产类别">
+      <el-table-column prop="ASSET_A1_60" label="存放地点">
       </el-table-column>
       <el-table-column prop="ASSET_A1_10" label="数量">
       </el-table-column>
@@ -88,10 +88,9 @@
       </el-table-column>
     </el-table>
 
-    <!-- <AssetEdit ref="assetA1Edit" :formdata="page.selectData"></AssetEdit> -->
-    <mei-dialog ref="AssetEditDialog" width="40%" :nopadding="true" title="资产编辑">
-      777
-    </mei-dialog>
+    <ys-dialog ref="AssetEditDialog" width="40%" :nopadding="true" title="资产编辑">
+      <AssetEdit ref="assetA1Edit" :formdata="page.selectData"></AssetEdit>
+    </ys-dialog>
   </div>
 </template>
 
@@ -105,8 +104,32 @@ import service from "@/service/index";
 })
 export default class AdminContent extends Vue {
   @Prop() private tableAssetsData!: Array<object>;
+
+  data() {
+    return {
+      //页面控制
+      page: {
+        loading: false,
+        Copyloading: false,
+        paginations: {},
+        searchtxt: "",
+        selectData: {},
+        selection: [], //选择的数据
+        sort: {
+          strorder: "", //字段
+          ordertype: "" //方向 不为空 就是 desc
+        }
+      },
+      //数据
+      data: {
+        sysAssetA1Data: [], //列数据
+        assetA1data: [] //表数据
+      }
+    };
+  }
   //编辑功能
   public handleEdit(column, row) {
+    this.page.selectData = row;
     this.$refs.AssetEditDialog.show();
   }
   //删除功能

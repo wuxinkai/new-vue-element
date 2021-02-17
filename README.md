@@ -178,7 +178,7 @@ import "./directives/debounce.js"; //防抖
 
 <script>
 export default {
-  name: "meidialog",
+  name: "ysdialog",
   data: () => ({
     page: {
       dialogVisible: false,
@@ -276,9 +276,9 @@ export default {
 import dialogComponent from "./dialog";
 
 //窗口
-export const meidialog = {
+export const ysdialog = {
   install: function(Vue) {
-    Vue.component("meiDialog", dialogComponent);
+    Vue.component("ysDialog", dialogComponent);
   }
 };
 ```
@@ -305,7 +305,7 @@ Vue.use(Element);
 //   elLayoutLeft,
 //   elLayoutMain,
 //   select,
-//   meidialog
+//   ysdialog
 // } from "../components/element/index";
 
 // Vue.use(Element);
@@ -317,7 +317,7 @@ Vue.use(Element);
 // Vue.use(elLayout);
 // Vue.use(elLayoutLeft);
 // Vue.use(elLayoutMain);
-// Vue.use(meidialog);
+// Vue.use(ysdialog);
 
 import * as elEx from "../components/element/index";
 
@@ -345,7 +345,7 @@ import "./plugins/element.js";
 5 实例中应用  利用实例中的插槽进行显示
 
 ```
- <mei-dialog ref="AssetEditDialog" width="40%" :nopadding="true" title="资产编辑">
+ <ys-dialog ref="AssetEditDialog" width="40%" :nopadding="true" title="资产编辑">
   777
-</mei-dialog>
+</ys-dialog>
 ```

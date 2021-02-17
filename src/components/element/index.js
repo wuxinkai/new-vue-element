@@ -1,8 +1,14 @@
 import dialogComponent from "./dialog";
-
+import selectComponent from "./select";
 //窗口
-export const meidialog = {
+export const ysdialog = {
   install: function(Vue) {
-    Vue.component("meiDialog", dialogComponent);
+    Vue.component("ysDialog", dialogComponent);
+  }
+};
+
+export const ysSelect = {
+  install: function(Vue) {
+    Vue.component("ysSelect", selectComponent);
   }
 };

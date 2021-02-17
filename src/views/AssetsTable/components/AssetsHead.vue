@@ -1,8 +1,8 @@
 <template>
-  <div class="head">
+  <div class="assetHead">
     <el-form ref="form" :model="form" label-width="auto" class="headForm" :inline="true">
       <el-form-item label="防抖函数">
-        <el-input v-model="form.id" placeholder="防抖查询" @input="onInput" v-debounce style="width: 200px"></el-input>
+        <el-input v-model="form.id"   v-nulltext @input="onInput" v-debounce style="width: 200px"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="small" v-debounce @click="onBtnClick" icon="el-icon-plus">新增</el-button>
@@ -55,7 +55,7 @@ export default class AdminHead extends Vue implements Admin {
 }
 </script>
 <style lang="less" scoped>
-.head {
+.assetHead {
   flex: 0 0 50px;
   width: 100%;
   margin: 10px 0;
