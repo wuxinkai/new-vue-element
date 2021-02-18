@@ -1,5 +1,5 @@
 <template>
-  <ys-select ref="select" :selectList="page.DataSource" :idKey="page.DataValueField" :nameKey="page.DataTextField" :pIdKey="page.TreeLevelField" :cascader="page.DataCascader" :disabledKey="page.DisabledField" :loading="page.loading" filterable emitPath v-model="page.SelectValue" v-bind="$attrs" @change="onChange"></ys-select>
+  <ys-select ref="select" :selectList="page.DataSource" :idKey="page.DataValueField" :nameKey="page.DataTextField" :pIdKey="page.TreeLevelField" :cascader="true" :disabledKey="page.DisabledField" :loading="page.loading" filterable emitPath v-model="page.SelectValue" v-bind="$attrs" @change="onChange"></ys-select>
 </template>
 
 <script>
@@ -16,9 +16,9 @@ export default {
         DataSource: [], //数据源
         DataValueField: "", //值字段
         DataTextField: "", //显示字段
-        TreeLevelField: "", //树上级ID字段  用了判断是 下拉菜单还是 多级选择
+        TreeLevelField: "", //树上级ID字段  用了判断是 下拉菜单还是 多级选择  ，带有TreeLevelField这个属性的都是ture
         DisabledField: "", //是否禁止 下拉选择
-        DataCascader: false, //是否是tree
+        // DataCascader: false, //是否是tree
         loading: false //加载过程
       },
       //数据
@@ -37,7 +37,7 @@ export default {
   },
   model: {
     prop: "SelectValue",// 继承了v-modal的值    <asset-ys-select v-model="form[field.SYS_ASSET_A1_160]"></asset-ys-select>
-    event: "change"
+    event: "change" //时间就相当于点击后把值给了 父页面的 form[field.SYS_ASSET_A1_160] 不用我们再从新赋值给 value了 
   },
   //内部方法
   methods: {
@@ -56,8 +56,8 @@ export default {
       _this.page.SelectValue = _this.SelectValue;
     },
     //点击事件
-    onChange() {
-
+    onChange(data) {
+      // console.log(data)
     },
     //  async getDataSource(opt) {
     //   this.page.loading = true;

@@ -4,7 +4,7 @@ export default [
     SYS_ASSET_A1_140: "基础数据",//分类
     SYS_ASSET_A1_50: "处理input", //
     SYS_ASSET_A1_60: "",
-    SYS_ASSET_A1_160: "ASSET_A1_30",
+    SYS_ASSET_A1_160: "ASSET_A1_30", //显示在input的值
     SYS_ASSET_A1_170: "Text", //判断类型
     obj1: null,
     obj2: null,
@@ -25,9 +25,9 @@ export default [
   },
   {
     AUTOID: 5,//
-    SYS_ASSET_A1_140: "在用信息",//分类
+    SYS_ASSET_A1_140: "基础数据",//分类
     SYS_ASSET_A1_50: "处理下拉选择框",
-    SYS_ASSET_A1_160: "",
+    SYS_ASSET_A1_160: "ASSET_A1_SELECT", //显示在select 里的值
     SYS_ASSET_A1_60: "asset_a2",
     SYS_ASSET_A1_70: "ASSET_A2_AUTOID",
     SYS_ASSET_A1_80: "ASSET_A2_10",
@@ -105,7 +105,7 @@ export default [
     SYS_ASSET_A1_110: "",
     SYS_ASSET_A1_120: "1",
     SYS_ASSET_A1_130: "1",
-    SYS_ASSET_A1_140: "基础数据",
+    SYS_ASSET_A1_140: "在用信息",
     SYS_ASSET_A1_150: "",
     SYS_ASSET_A1_160: "ASSET_A1_180"
   }, {

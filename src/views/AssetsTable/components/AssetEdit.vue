@@ -1,6 +1,6 @@
 <template>
   <div style="height:60vh" class="vH  flex-column">
-    <el-row style="min-height:300px;padding:10px" class="main">
+    <el-row style="min-height:300px;padding:10px" class="asset-main">
       <el-form class="defhetght alltransition" v-loading="page.loading" ref="form" :rules="rules" :model="form" label-width="110px" label-position="left" :disabled="readonly">
         <el-collapse v-model="page.activeNames">
           <el-collapse-item v-for="group in page.sysasseta1.group" :key="group" :name="group">
@@ -24,10 +24,9 @@
                   <!-- 编辑 -->
                   <template v-else>
                     <!-- 处理文本框 -->
-                    <el-input v-if="field.SYS_ASSET_A1_170 == 'Text' "  v-model="form[field.SYS_ASSET_A1_160]"></el-input>
+                    <el-input v-if="field.SYS_ASSET_A1_170 == 'Text' " v-model="form[field.SYS_ASSET_A1_160]"></el-input>
                     <!-- 处理日期 -->
-                    <el-date-picker v-if="field.SYS_ASSET_A1_170 == 'Date'
-                      " v-model="form[field.SYS_ASSET_A1_160]" align="right" type="date" class="vWimp" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
+                    <el-date-picker v-if="field.SYS_ASSET_A1_170 == 'Date'" v-model="form[field.SYS_ASSET_A1_160]" align="right" type="date" class="vWimp" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
                     </el-date-picker>
                     <!-- 处理下拉选择 v-else-if -->
                     <asset-ys-select v-if="field.SYS_ASSET_A1_170 == 'Select'" v-model="form[field.SYS_ASSET_A1_160]" :ref="`ddl${field.SYS_ASSET_A1_160}`" :sysAssetAItem="field"></asset-ys-select>
@@ -50,7 +49,6 @@
     </el-row>
   </div>
 </template>
-
 <script>
 import AssetYsSelect from "./AssetYsSelect.vue";
 import FormList from "./json/form";  //form数据
@@ -71,11 +69,11 @@ export default {
       //表单数据
       form: { ...this.formdata },
       rules: {},
-      thisDialog: {}
+      // thisDialog: {}
     };
   },
   //依赖注入
-  // inject: ["AssetA1", "thisdialog"],
+  inject: ["AssetA1", "thisdialog"],
   //外部属性
   props: {
     formdata: { //赋值给
@@ -97,7 +95,6 @@ export default {
     async initPage() {
       this.page.activeNames = ["基础数据", "出厂信息", "在用信息"]
       this.page.loading = true
-      // console.log(this.form)
       this.page.sysasseta1 = {
         fields: FormList,
         group: ["基础数据", "出厂信息", "在用信息"],
@@ -106,7 +103,7 @@ export default {
       this.rules = this.getRules(this.page.sysasseta1.fields);
       this.$nextTick(() => {
         this.page.loading = false;
-        this.$refs.form.$el.List.remove("defhetght");
+        // this.$refs.form.$el.List.remove("defhetght");
       });
     },
     //动态创建验证规则 (字段集合)
@@ -130,7 +127,12 @@ export default {
   computed: {},
   //监视
   watch: {
-
+    formdata: {
+      handler(newName, oldName) {
+        debugger
+      },
+      immediate: true
+    }
   }
 };
 </script>
@@ -139,13 +141,22 @@ export default {
 .defhetght {
   height: 60vh;
 }
+.asset-main {
+  flex: 1;
+  position: relative;
+  margin-bottom: 10px;
+  overflow: auto;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .formfooter {
   padding: 10px 20px 20px;
   text-align: center;
-  // position: absolute;
   bottom: 0;
-  /* float: right; */
   height: auto;
-  width: 89%;
+  width: 100%;
 }
 </style>

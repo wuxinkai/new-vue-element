@@ -1,19 +1,21 @@
 <template>
-  <!-- 下拉选择框 -->
-  <el-select v-if="!pIdKey" :disabled="loading" v-nulltext v-model="page.inputVal" :style="`width:${width}`" v-bind="$attrs" v-on="$listeners" @change="onChange">
-    <template v-for="item in selectList">
-      <el-option :key="item[idKey]" :value="item[idKey]" :label="item[nameKey]" :disabled="item[disabledKey]"></el-option>
-    </template>
-  </el-select>
-  <!-- 下拉选择树 -->
-  <el-cascader v-else-if="cascader" :disabled="loading" v-nulltext :props="{ ...$attrs }" :options="options" v-model="page.inputVal" :style="`width:${width}`" v-bind="$attrs" v-on="$listeners" @change="onChange"></el-cascader>
-  <!-- <mei-select-tree v-else :disabled="loading" v-model="page.inputVal" :width="width" size="" v-bind="$attrs" v-on="$listeners" :data="data" :idKey="idKey" :pIdKey="pIdKey" :nameKey="nameKey" :disabledKey="disabledKey" @change="onChange"></mei-select-tree> -->
+  <div>
+    <!-- 下拉选择框 -->
+    <el-select v-if="!pIdKey" :disabled="loading" v-nulltext v-model="page.inputVal" :style="`width:${width}`" v-bind="$attrs" v-on="$listeners" @change="onChange">
+      <template v-for="item in selectList">
+        <el-option :key="item[idKey]" :value="item[idKey]" :label="item[nameKey]" :disabled="item[disabledKey]"></el-option>
+      </template>
+    </el-select>
+    <!-- 下拉选择树 -->
+    <el-cascader v-else-if="cascader" :disabled="loading" v-nulltext :props="{ ...$attrs }" :options="options" v-model="page.inputVal" :style="`width:${width}`" v-bind="$attrs" v-on="$listeners" @change="onChange"></el-cascader>
+  </div>
 </template>
 <script>
 export default {
   name: "ysSelect",
   data() {
     return {
+
       page: {
         inputVal: this.inputVal
       }
@@ -71,6 +73,31 @@ export default {
     //选择事件
     onChange(val) {
 
+    },
+  },
+  computed: {
+    //计算属性
+    options() {
+      let _options = [];
+      if (this.selectList.length == 0) {
+        return [];
+      }
+      //this 可以获取到 所有属性
+      let { selectList, idKey, pIdKey, nameKey, disabledKey } = this;
+      console.log(selectList, idKey, pIdKey, nameKey, disabledKey)
+      _options = JSON.parse(JSON.stringify(selectList));
+      //从新设置属性
+      _options.forEach(item => {
+        Object.assign(item, {
+          value: item[idKey], //树的 两个值
+          label: item[nameKey], // 两个值
+          disabled: !!item[disabledKey]
+        });
+      });
+      //进行分类
+      console.log(idKey, pIdKey)
+      _options = _options.getChildren(idKey, pIdKey);
+      return _options
     }
   }
 }

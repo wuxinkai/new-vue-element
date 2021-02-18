@@ -164,7 +164,7 @@ import "./directives/debounce.js"; //防抖
   </el-form-item>
 ```
 
-# 注册全局組件
+# 注册全局組件 dialog
 
 1 写组件 src\components\element\dialog\index.vue
 
@@ -342,10 +342,299 @@ Vue.component(CollapseTransition.name, CollapseTransition);
 import "./plugins/element.js";
 ```
 
-5 实例中应用  利用实例中的插槽进行显示
+5 实例中应用 利用实例中的插槽进行显示
 
 ```
  <ys-dialog ref="AssetEditDialog" width="40%" :nopadding="true" title="资产编辑">
   777
 </ys-dialog>
+```
+
+# vue 中 modal 的应用
+
+### 在自定义组件中定义 v-model="form"
+
+```
+ <asset-ys-select  v-model="form" ></asset-ys-select>
+```
+
+### 在子组件接收
+
+```
+  props: {
+    SelectValue: [String, Array, Number]
+  },
+  model: {
+    prop: "SelectValue",// 继承了v-modal的值
+    event: "change" //点击后值默认赋值给 组件的v-model 不用我们再次进行绑定了
+  },
+  methods: {
+    async getDataSourceTow(num) {
+      _this.page.SelectValue = _this.SelectValue; //项目中应用
+    },
+  }
+```
+
+# select 的封装 和多级下拉
+
+### （1）代码 src\views\AssetsTable\components\AssetYsSelect.vue
+
+```
+  <ys-select
+   ref="select"
+   :selectList="page.DataSource"
+   :idKey="page.DataValueField"
+   :nameKey="page.DataTextField"
+   :pIdKey="page.TreeLevelField"
+    :cascader="page.DataCascader"
+    :disabledKey="page.DisabledField"
+     :loading="page.loading"
+     filterable emitPath
+     v-model="page.SelectValue"
+     v-bind="$attrs"
+     @change="onChange"
+     >
+  </ys-select>
+```
+
+### (2)字段意思
+
+```
+  SelectValue: "", //值
+  DataSource: [], //数据源
+  DataValueField: "", //值字段
+  DataTextField: "", //显示字段
+  TreeLevelField: "", //树上级ID字段  用了判断是 下拉菜单还是 多级选择
+  DisabledField: "", //是否禁止 下拉选择
+  DataCascader: false, //是否是tree
+  loading: false //加载过程
+```
+
+### (3) 组件代码 src\components\element\select\index.vue
+
+```
+<template>
+  <div>
+    <!-- 下拉选择框 -->
+    <el-select v-if="!pIdKey" :disabled="loading" v-nulltext v-model="page.inputVal" :style="`width:${width}`" v-bind="$attrs" v-on="$listeners" @change="onChange">
+      <template v-for="item in selectList">
+        <el-option :key="item[idKey]" :value="item[idKey]" :label="item[nameKey]" :disabled="item[disabledKey]"></el-option>
+      </template>
+    </el-select>
+    <!-- 下拉选择树 -->
+    <el-cascader v-else-if="cascader" :disabled="loading" v-nulltext :props="{ ...$attrs }" :options="options" v-model="page.inputVal" :style="`width:${width}`" v-bind="$attrs" v-on="$listeners" @change="onChange"></el-cascader>
+  </div>
+</template>
+<script>
+export default {
+  name: "ysSelect",
+  data() {
+    return {
+
+      page: {
+        inputVal: this.inputVal
+      }
+    };
+  },
+  props: {
+    // 下拉列表数据
+    selectList: {
+      type: Array,
+      default: () => []
+    },
+    //加载过程
+    loading: {
+      type: Boolean,
+      default: () => false
+    },
+    //显示在input中的数据
+    inputVal: [String, Array, Number],
+    //input宽度
+    width: {
+      type: String,
+      default: "100%"
+    },
+    //是否禁用字段
+    disabledKey: {
+      type: String,
+      default: ""
+    },
+    // 值字段名
+    idKey: {
+      type: String,
+      default: "value"
+    },
+    //  lable 显示的，显示在下拉页面上的内容
+    nameKey: {
+      type: String,
+      default: "text"
+    },
+    //-------------------select-tree------------------------
+    //树上级ID字段
+    pIdKey: "",
+    //是否是tree
+    cascader: {
+      type: Boolean,
+      default() {
+        return false;
+      }
+    }
+  },
+  model: {
+    prop: "inputVal",
+    event: "change"
+  },
+  methods: {
+    //选择事件
+    onChange(val) {
+
+    },
+  },
+  computed: {
+    //计算属性
+    options() {
+      let _options = [];
+      if (this.selectList.length == 0) {
+        return [];
+      }
+      //this 可以获取到 所有属性
+      let { selectList, idKey, pIdKey, nameKey, disabledKey } = this;
+      console.log(selectList, idKey, pIdKey, nameKey, disabledKey)
+      _options = JSON.parse(JSON.stringify(selectList));
+      //从新设置属性
+      _options.forEach(item => {
+        Object.assign(item, {
+          value: item[idKey], //树的 两个值
+          label: item[nameKey], // 两个值
+          disabled: !!item[disabledKey]
+        });
+      });
+      //进行分类
+      console.log(idKey, pIdKey)
+      _options = _options.getChildren(idKey, pIdKey);
+      return _options
+    }
+  }
+}
+</script>
+```
+
+### (4) 注册 src\components\element\index.js
+
+```
+import selectComponent from "./select";
+
+//下拉
+export const select = {
+  install: function(Vue) {
+    Vue.component("meiSelect", selectComponent);
+  }
+};
+```
+
+### (5) 遍历加载到全局 src\plugins\element.js
+
+```
+找到路径看代码
+```
+
+# 指令 placeholder 提示的封装
+
+### （1）查询父标签是否有 label 如果有就把 文字拿过来插入到页面 src\directives\placeholder.js
+
+```
+import Vue from "vue";
+import { hasClass } from "../utils/validate.js";
+/**
+ * @description 为空时提示
+ */
+Vue.directive("nulltext", {
+  inserted: (el, binding, vnode) => {
+    const text = el.__vue__.$parent.label || "内容";
+    let placeholder = "请输入";
+    if (hasClass(el, "el-select")) {
+      placeholder = "请选择";
+    }
+    el.getElementsByClassName("el-input__inner")[0].placeholder =
+      binding.value || placeholder + text;
+  }
+});
+
+```
+
+### （2） 注册到页面 src\main.ts
+
+```
+import "./directives/placeholder.js"; //为空提示
+```
+
+### (3) 项目应用
+
+```
+ <el-form-item label="防抖函数">
+    <el-input v-model="form.id"   v-nulltext @input="onInput" v-debounce style="width: 200px"></el-input>
+  </el-form-item>
+```
+
+# provide & inject 跨组件传值
+
+### （1）在子组件中 provide 传出去 thisdialog
+
+```
+<script>
+export default {
+  name: "ysdialog",
+  data: () => ({
+
+  }),
+  props: {
+
+  },
+  provide() {
+    return {
+      thisdialog: this
+    };
+  },
+  mounted() { },
+  watch: {
+    dialogVisible(v) {
+      if (v) {
+        this.show();
+      } else {
+        this.close();
+      }
+    }
+  },
+  methods: {}
+};
+</script>
+```
+
+### （2）另一个子组件接收 inject: [ "thisdialog"],
+
+```
+<script>
+import AssetYsSelect from "./AssetYsSelect.vue";
+import FormList from "./json/form";  //form数据
+export default {
+  components: {
+    AssetYsSelect
+  },
+  data() {
+    return {
+    };
+  },
+  inject: [ "thisdialog"],
+  props: {},
+  methods: {
+    //点击关闭
+     onClose() {
+      this.thisdialog.close();
+    }
+  },
+  mounted() { },
+  computed: {},
+  watch: {}
+};
+</script>
 ```

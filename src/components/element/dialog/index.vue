@@ -4,7 +4,6 @@
     <div ref="footer" v-if="page.showfoot" class="el-dialog__footer dialog-footer"></div>
   </el-dialog>
 </template>
-
 <script>
 export default {
   name: "ysdialog",
