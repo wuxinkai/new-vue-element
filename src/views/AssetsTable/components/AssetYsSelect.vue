@@ -1,5 +1,6 @@
 <template>
-  <ys-select ref="select" :selectList="page.DataSource" :idKey="page.DataValueField" :nameKey="page.DataTextField" :pIdKey="page.TreeLevelField" :cascader="true" :disabledKey="page.DisabledField" :loading="page.loading" filterable emitPath v-model="page.SelectValue" v-bind="$attrs" @change="onChange"></ys-select>
+  <ys-select ref="select" :selectList="page.DataSource" :idKey="page.DataValueField" :nameKey="page.DataTextField" :pIdKey="page.TreeLevelField" :cascader="true" :disabledKey="page.DisabledField" :loading="page.loading" filterable emitPath v-model="page.SelectValue" v-bind="$attrs" @change="onChange">
+  </ys-select>
 </template>
 
 <script>
@@ -56,21 +57,9 @@ export default {
       _this.page.SelectValue = _this.SelectValue;
     },
     //点击事件
-    onChange(data) {
-      // console.log(data)
+    onChange(val, text) {
+      this.$emit("change", val, text);
     },
-    //  async getDataSource(opt) {
-    //   this.page.loading = true;
-    //   let ddl = await AssetA1.GetAssetA1Ddl(this.sysAssetAItem, opt);
-    //   Object.assign(this.page, { ...ddl });
-    //   // console.log(this.page);
-
-    //   this.$nextTick(() => {
-    //     //赋值
-    //     this.page.loading = false;
-    //   });
-    //   this.page.ddlvalue = this.ddlvalue;
-    // },
   },
   //组件
   components: {},
@@ -90,6 +79,11 @@ export default {
       },
       immediate: true
     },
+    //监听数据变化
+     "page.SelectValue"(val) {
+      const text = this.$refs.select.getSeleteText();
+      this.$emit("onChange", val, text);
+    }
   }
 };
 </script>

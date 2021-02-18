@@ -23,6 +23,7 @@
                   </template>
                   <!-- 编辑 -->
                   <template v-else>
+
                     <!-- 处理文本框 -->
                     <el-input v-if="field.SYS_ASSET_A1_170 == 'Text' " v-model="form[field.SYS_ASSET_A1_160]"></el-input>
                     <!-- 处理日期 -->
@@ -101,6 +102,7 @@ export default {
       }
 
       this.rules = this.getRules(this.page.sysasseta1.fields);
+      console.log(this.page.sysasseta1.fields)
       this.$nextTick(() => {
         this.page.loading = false;
         // this.$refs.form.$el.List.remove("defhetght");
@@ -112,7 +114,18 @@ export default {
     },
     //type 1 保存  2 保存并关闭
     async onSave(type) {
-
+      // console.log(this.form) //  只能获取到 ASSET_A1_100 的数字改变不能获取到，页面值得变化
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          // const res = await AssetA1.Save(this.form);
+          // res.strMS && this.$message(res.strMS); //提示
+          // this.form.ASSET_A1_AUTOID = parseInt(res.strMsId); //赋值
+          // this.AssetA1.getData(); //刷新
+          // res.MsRbool && type == 2 && this.thisdialog.close(); //关闭
+        } else {
+          this.$message.error("请重新填写"); //提示
+        }
+      });
     },
     onClose() {
       this.thisdialog.close();
@@ -127,12 +140,9 @@ export default {
   computed: {},
   //监视
   watch: {
-    formdata: {
-      handler(newName, oldName) {
-        debugger
-      },
-      immediate: true
-    }
+    async formdata(val) {
+      this.form = val;
+    },
   }
 };
 </script>

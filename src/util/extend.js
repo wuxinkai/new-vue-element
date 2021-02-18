@@ -80,7 +80,7 @@ Array.prototype.getChildren = function(key, pid) {
   const newdata = [];
   const getChildren = item => {
     let thisc = this.search({ [pid]: item[key] });
-    console.log({ [pid]: item[key] })
+    // console.log({ [pid]: item[key] })
     thisc.forEach(thisc_item => {
       const _c = getChildren(thisc_item);
       if (_c && _c.length != 0) {

@@ -638,3 +638,17 @@ export default {
 };
 </script>
 ```
+### select获取值 
+```
+
+```
+
+# 列表到详情的的关系表
+![Image text](./src/assets/images/1.jpg)
+> form 是 列表的item
+>  是要现实的 模态框列表
+>  是select 要显示的下拉列表
+```
+form 和 field   field 和select.js
+AssetEdit ==>  AssetYsSelect ==>  components/select/index.vue
+```

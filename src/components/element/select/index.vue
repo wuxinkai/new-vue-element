@@ -11,11 +11,11 @@
   </div>
 </template>
 <script>
+import { isArray, isArrayEmpty } from "@/util/validate";  //isArray是否是数组   isArrayEmpty是否是空数组
 export default {
   name: "ysSelect",
   data() {
     return {
-
       page: {
         inputVal: this.inputVal
       }
@@ -72,8 +72,26 @@ export default {
   methods: {
     //选择事件
     onChange(val) {
-
+      const text = this.getSeleteText();
     },
+    //从新执行方法 获取文本内容
+    getSeleteText() {
+      if (!this.page.inputVal) return;
+      if (isArray(this.page.inputVal)) {
+        let key = this.selectList.filter(item => {
+          return this.page.inputVal.includes(item[this.idKey]);
+        });
+        return key.map(item => {
+          return item[this.nameKey];
+        });
+      } else {
+        let key = this.selectList.find(item => {
+          return item[this.idKey] == this.page.inputVal;
+        });
+        console.log(key[this.nameKey])
+        return key[this.nameKey];
+      }
+    }
   },
   computed: {
     //计算属性
@@ -98,6 +116,17 @@ export default {
       console.log(idKey, pIdKey)
       _options = _options.getChildren(idKey, pIdKey);
       return _options
+    }
+  },
+   //监视
+  watch: {
+    inputVal: {
+      handler(val) {
+        this.$nextTick(() => {
+          this.page.inputVal = val; // ASSET_A1_100: 3 
+        });
+      },
+      immediate: true
     }
   }
 }
