@@ -42,7 +42,7 @@ export default [
     SYS_ASSET_A1_20: "110",
     SYS_ASSET_A1_30: 41,
     SYS_ASSET_A1_40: "1",
-    SYS_ASSET_A1_50: "库存状态",
+    SYS_ASSET_A1_50: "处理Select",
     SYS_ASSET_A1_60: "system_4",
     SYS_ASSET_A1_70: "System_4_20",
     SYS_ASSET_A1_80: "System_4_40",
@@ -71,7 +71,7 @@ export default [
     SYS_ASSET_A1_130: "1",
     SYS_ASSET_A1_140: "基础数据",
     SYS_ASSET_A1_150: "",
-    SYS_ASSET_A1_160: "ASSET_A1_100"
+    SYS_ASSET_A1_160: "ASSET_A1_100" //处理存放
   }, {
     AUTOID: 16,
     SYS_ASSET_A1_10: 0,

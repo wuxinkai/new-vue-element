@@ -80,9 +80,10 @@
       </el-table-column>
       <el-table-column prop="ASSET_A1_280" label="库存状态">
       </el-table-column>
-      <el-table-column label="操作" width="200">
+      <el-table-column label="操作" >
         <template slot-scope="scope">
           <el-button type="info" size="mini" @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit">编辑</el-button>
+          <el-button type="info" size="mini" @click="handleDetails(scope.$index, scope.row)" icon="el-icon-tickets">详情</el-button>
           <el-button type="danger" size="mini" @click="handleDel(scope.$index, scope.row)" icon="el-icon-delete">删除</el-button>
         </template>
       </el-table-column>
@@ -91,16 +92,21 @@
     <ys-dialog ref="AssetEditDialog" width="40%" :nopadding="true" title="资产编辑">
       <AssetEdit ref="assetA1Edit" :formdata="page.selectData"></AssetEdit>
     </ys-dialog>
+
+    <ys-dialog ref="cardDialog" width="40%" :nopadding="true" title="查看详情">
+      <AssetCard ref="assetCard" :cardData="page.selectData"></AssetCard>
+    </ys-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import AssetEdit from "./AssetEdit.vue";
+import AssetCard from "./AssetCard.vue";
 import service from "@/service/index";
 
 @Component({
-  components: { AssetEdit },
+  components: { AssetEdit,AssetCard},
 })
 export default class AdminContent extends Vue {
   @Prop() private tableAssetsData!: Array<object>;
@@ -132,6 +138,11 @@ export default class AdminContent extends Vue {
     this.page.selectData = row;
     this.$refs.AssetEditDialog.show();
   }
+   //打开资产卡片
+  public  handleDetails(column,item) {
+      this.page.selectData = item;
+      this.$refs.cardDialog.show();
+    }
   //删除功能
   public handleDel(column, row) {}
 }

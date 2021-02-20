@@ -638,17 +638,189 @@ export default {
 };
 </script>
 ```
-### select获取值 
+
+### select 获取值
+
 ```
 
 ```
 
 # 列表到详情的的关系表
+
 ![Image text](./src/assets/images/1.jpg)
-> form 是 列表的item
->  是要现实的 模态框列表
->  是select 要显示的下拉列表
+
+> form 是 列表的 item
+> 是要现实的 模态框列表
+> 是 select 要显示的下拉列表
+
 ```
 form 和 field   field 和select.js
 AssetEdit ==>  AssetYsSelect ==>  components/select/index.vue
+```
+
+#表单验证
+
+#### ref="form"
+
+#### rules: {},
+
+#### prop="ASSET_A1_60"
+
+```
+  <el-form class="defhetght alltransition" v-loading="page.loading" ref="form" :rules="rules" :model="form" label-width="110px" label-position="left" :disabled="readonly">
+        <el-collapse v-model="page.activeNames">
+          <el-collapse-item v-for="group in page.sysasseta1.group" :key="group" :name="group">
+            <template slot="title">
+              <span style="font-size:19px;font-weight:bold">{{ group }}</span>
+            </template>
+            <transition-group enter-active-class="animated fadeInDown">
+              <template v-for="field in page.sysasseta1.fields">
+                <el-form-item v-if="field.SYS_ASSET_A1_140 == group" :key="field.AUTOID" :prop="field.SYS_ASSET_A1_160" :label="readonly  ? field.SYS_ASSET_A1_50 + ':' : field.SYS_ASSET_A1_50 ">
+
+                </el-form-item>
+              </template>
+            </transition-group>
+          </el-collapse-item>
+        </el-collapse>
+      </el-form>
+```
+
+动态渲染 验证 方法
+
+```
+  getRules(sysasseta1) {
+      let _rules = {}
+      // { required: true, message: '请输入活动名称', trigger: 'blur' },
+      let trigger = "blur"; //触发方式 离开
+      let required = true; //必填
+
+      requiredfields.forEach(item => {  //全局注册主键  src\utils\extend.js
+        const a1 = sysasseta1.search({
+          SYS_ASSET_A1_160: item
+        })
+        if (a1 && a1.length != 0) {
+          // 对象嵌套数组
+          Object.assign(_rules, {   // prop 上的属性名  == [item]
+            //数组
+            [item]: [
+              {
+                required,
+                trigger,
+                message: `请输入${a1[0].SYS_ASSET_A1_50}`  //SYS_ASSET_A1_50 是标题
+              }
+            ]
+          });
+        }
+
+      });
+      console.log(_rules)
+      return _rules
+    },
+```
+
+### 点击确认 进行验证
+
+```
+ async onSave(type) {
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+
+        } else {
+          this.$message.error("请重新填写"); //提示
+        }
+      });
+    },
+```
+
+# 数组赋值的写法
+
+```
+//这样不可以
+//this.form[A1_160] = "xxx";
+
+//直接赋值
+this.form = Object.assign({},{
+    [A1_160]:"xxx"
+});
+```
+
+# 卡片用法
+### 页面组件 src\views\AssetsTable\components\AssetsContent.vue
+```
+<ys-dialog ref="cardDialog" width="40%" :nopadding="true" title="查看详情">
+      <AssetCard ref="assetCard" :cardData="page.selectData"></AssetCard>
+    </ys-dialog>
+```
+### 点击事件打开弹框  和传递参数  src\views\AssetsTable\components\AssetsContent.vue
+```
+public  handleDetails(column,item) {
+      this.page.selectData = item;
+      this.$refs.cardDialog.show();
+    }
+```
+### 设置选项卡切换  src\views\AssetsTable\components\AssetCard.vue
+* 隐藏底部footer
+* readonly 区分 编辑 和查看详情
+* 还有新增 没有解决
+```
+<template>
+  <div id="card" class="assetCard flex" style="height:68vh">
+    <el-row>
+      <el-tabs v-model="page.activeName" @tab-click="handleClick">
+        <el-tab-pane v-for="item in data.tabs" :key="item.name" :ref="item.name" :label="item.label" :name="item.name">
+        </el-tab-pane>
+      </el-tabs>
+    </el-row>
+    <el-row class="main">
+      <transition name="breadcrumb">
+        <!-- :is="page.activeName" 当前显示的内容  -->
+        <!--:formdata="cardData" :readonly="true" 传递参数   -->
+        <!-- 动态组件&vue-router -->
+        <component :is="page.activeName" ref="cardCom" :formdata="cardData" :readonly="true" keep-alive></component>
+      </transition>
+    </el-row>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      //页面控制
+      page: {
+        activeName: "Details"
+      },
+      //数据
+      data: {
+        tabs: []
+      }
+    };
+  },
+  props: {
+    cardData: Object  //table 数据
+  },
+  components: {
+    Details: resolve => { require(["./AssetEdit"], resolve); }, //加载的是编辑页面
+    Modify: resolve => {
+
+    }
+  },
+  methods: {
+    //初始化项目
+    initPage() {
+      this.data.tabs.push({ label: "查看详情", name: "Details" });
+      this.data.tabs.push({ label: "变更详情", name: "Modify" });
+    },
+    handleClick() { }
+  },
+  mounted() {
+    this.initPage();
+  },
+}
+</script>
+<style lang="less" scoped>
+.assetCard {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+</style>
 ```

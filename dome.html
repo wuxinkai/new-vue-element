@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="box">
+      <div class="left" id="demo">
+        <button onclick="myFunction()">点击事件</button>
+        <p>111111111111111111</p>
+      </div>
+      <div class="right">
+        <p>222222222222222222</p>
+        <div class="box2">height:100%无效</div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  function myFunction() {
+    let leftDom = document.getElementById("demo");
+    if(leftDom.style.width=='120px'){
+      leftDom.style.width =  320 + "px";
+    }else{
+      leftDom.style.width =  120 + "px";
+    }
+  }
+</script>
+<style>
+  html,
+  body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  .box {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    flex-basis: auto;
+    box-sizing: border-box; /*内padding */
+    min-width: 0;
+    height: 100%;
+  }
+  .left {
+    width: 340px;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box; /*内padding */
+    background: rgba(255, 0, 0, 0.486);
+  }
+  .right {
+    height: 100%;
+
+    box-sizing: border-box; /*内padding */
+    background: rgba(68, 0, 255, 0.431);
+    display: block;
+    flex: 1; /* flex: 1; === flex: 1 1 auto;  */
+    flex-basis: auto;
+    overflow: auto;
+    padding: 20px;
+  }
+  .box2{
+    width: 300px;
+    height: 100%;
+    background: red;
+  }
+</style>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <textarea id="txtdata" style="height: 100px;width: 500px;"></textarea>
+    <br />
+    <button onclick="search1()">age=27</button>
+    <button onclick="search2()">like包含唱跳的</button>
+    <button onclick="search3()">like包含唱跳 并且 age=17</button>
+    <button onclick="search4()">自定义函数</button>
+    <br />
+    <textarea id="txtsearch" style="height: 100px;width: 500px;"></textarea>
+  </body>
+</html>
+<script>
+  /**
+   * 数组筛选
+   * @param {Object}} {item:{type:"",vla:""}}
+   * @return {Array} []
+   */
+  Array.prototype.search = function(searchdata) {
+    let t = this;
+    let typefn = {
+      ["包含"]: (item, val) => item.includes(val),
+      ["开始"]: (item, val) => item.startsWith(val),
+      ["结束"]: (item, val) => item.endsWith(val),
+      ["等于"]: (item, val) => item == val,
+      ["不等于"]: (item, val) => item != val,
+      ["大于"]: (item, val) => item > val,
+      ["小于"]: (item, val) => item < val,
+      ["大于等于"]: (item, val) => item >= val,
+      ["小于等于"]: (item, val) => item <= val,
+    };
+    let data = t.filter((item) => {
+      return Object.keys(searchdata).every((i) => {
+        let { type = "等于", val = searchdata[i] } = searchdata[i];
+        let fn = typefn[type];
+        if (typeof val == "function") {
+          return val(item[i]);
+        }
+        return fn(item[i], val);
+      });
+    });
+    if (Object.keys(searchdata).length == 0) {
+      data = t;
+    }
+    return data;
+  };
+</script>
+<script>
+  const data = [
+    {
+      name: "小李",
+      age: "17",
+      like: ["唱跳", "女"],
+    },
+    {
+      name: "小王",
+      age: "27",
+      like: ["多人合作", "运动", "健身"],
+    },
+    {
+      name: "小彐",
+      age: "27",
+      like: ["唱跳", "运动"],
+    },
+  ];
+  document.getElementById("txtdata").value = JSON.stringify(data);
+
+  const search = (val) => {
+    document.getElementById("txtsearch").value = JSON.stringify(
+      data.search(val)
+    );
+  };
+  const search1 = () => {
+    search({
+      age: 27,
+    });
+  };
+  const search2 = () => {
+    search({
+      like: {
+        type: "包含",
+        val: "唱跳",
+      },
+    });
+  };
+  const search3 = () => {
+    search({
+      like: {
+        type: "包含",
+        val: "唱跳",
+      },
+      age: 17,
+    });
+  };
+  const search4 = () => {
+    search({
+      like: (val) => val.includes("多人合作"),
+    });
+  };
+</script>
