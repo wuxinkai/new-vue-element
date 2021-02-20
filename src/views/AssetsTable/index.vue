@@ -1,7 +1,7 @@
 <template>
   <div class="assets vH">
-    <assets-head @getHeadData='getHeadData' ref="child" :page='page'></assets-head>
-    <assets-content :tableAssetsData="handleTableAssetsData" :listLoading="listLoading" @contentFlush='contentFlush'></assets-content>
+    <assets-head @getHeadData='getHeadData' @handleSearch="handleSearch" ref="child" :page='page'></assets-head>
+    <assets-content ref="assetsCon" :tableAssetsData="handleTableAssetsData" :listLoading="listLoading" @contentFlush='contentFlush'></assets-content>
     <div class="block"></div>
     <!-- <el-container>
       <el-aside width="200px" class="">Aside</el-aside>
@@ -36,6 +36,10 @@ export default {
       this.tableAssetstotal = result.total
       this.listLoading = false
       // debugger
+    },
+    //点击高级搜索弹窗
+    handleSearch() {
+      this.$refs.assetsCon.showAssetA1Search()
     },
     contentFlush() {
 

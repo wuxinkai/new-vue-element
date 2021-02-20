@@ -2,11 +2,11 @@
   <div class="assetHead">
     <el-form ref="form" :model="form" label-width="auto" class="headForm" :inline="true">
       <el-form-item label="防抖函数">
-        <el-input v-model="form.id"   v-nulltext @input="onInput" v-debounce style="width: 200px"></el-input>
+        <el-input v-model="form.id" v-nulltext @input="onInput" v-debounce style="width: 200px"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="small" v-debounce @click="onBtnClick" icon="el-icon-plus">新增</el-button>
-        <el-button type="primary" size="small" icon="el-icon-search">高级查询</el-button>
+        <el-button type="primary" size="small" @click="onBtnSearch" icon="el-icon-search">高级查询</el-button>
         <el-button type="primary" size="small" icon="el-icon-delete">批量删除</el-button>
         <el-button type="primary" size="small" icon="el-icon-edit">批量修改</el-button>
         <el-button type="info" size="small" icon="el-icon-document">导出Excel</el-button>
@@ -45,10 +45,14 @@ export default class AdminHead extends Vue implements Admin {
   public onInput() {
     this.getAssets();
   }
-  public onBtnClick(){
-    
-    console.log(1)
+  public onBtnClick() {
+    console.log(1);
   }
+  //高级搜索
+  public onBtnSearch() {
+    this.$emit("handleSearch")
+  }
+
   private created() {
     this.getAssets();
   }

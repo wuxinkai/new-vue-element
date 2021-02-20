@@ -1,20 +1,21 @@
 import Vue from 'vue'
 import App from './App.vue'
+import "./plugins/element.js";
+import "./plugins/animate.js";
 import './registerServiceWorker'
 import '../src/util/extend'
 import router from './router'
 import store from './store'
 
 import "./directives/debounce.js"; //防抖
-import "./plugins/element.js";
 import "./directives/placeholder.js"; //为空提示
-import "./plugins/animate.js";
+
+
 // 引入样式
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+
 
 import 'font-awesome/css/font-awesome.css'
-
+import "./style/transition.css"; //
 // 引入axios
 import axios from "axios"
 import VueAxios from "vue-axios"
@@ -26,7 +27,7 @@ Mock.bootstrap()
 // 引入dialog可移动
 import './directives.js'
 
-Vue.use(ElementUI)
+
 Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
 

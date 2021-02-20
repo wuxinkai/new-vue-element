@@ -58,8 +58,11 @@ export default {
     },
     //点击事件
     onChange(val, text) {
-      this.$emit("change", val, text);
+      this.$emit("change", val, text); //修改了父页面v-model的值  <asset-ys-select v-model="form[formItem.SYS_ASSET_A1_160]"  ></asset-ys-select>
     },
+
+    // <input type="text" :value="price" @input="price=$event.target.value">  上面等于下面的
+    //  <input v-model="price"  ></input>
   },
   //组件
   components: {},

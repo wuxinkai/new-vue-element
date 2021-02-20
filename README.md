@@ -5,14 +5,6 @@
 vue3-admin 是一个后台管理系统的前端页面展示，是由 vue-cli4 和 elemnet-ui 搭建实现的。使用了最新的 vue 框架，内部采用了组件化开发模式，尽可能使得每个组件都遵循单一
 功能原则。虽然刚开始看起来可能略感疲惫（由于子组件功能单一，所以内部通信较多），但是对后期的维护有着非常大的好处。项目采用弹性盒（flex）布局，故而在移动端也有着较好的显示效果，可在移动端进行打开 demo 查看。
 
-## 演示(由于作者自己买的低配版阿里云服务器，所以可能导致请求时间略长)
-
-[在线 demo](http://39.105.222.188/vue3.0-admin/#/login)
-
-移动端可扫码查看
-
-![avatar](./qrCode.png)
-
 ## 更快更好的开发体验，请查看下面的项目
 
 [vue3 实战项目](https://github.com/guodonglw/vue3-admin)
@@ -41,32 +33,17 @@ npm rebuild node-sass
 
 浏览器访问 http://localhost:8080
 
-## 发布
+# 知识点
 
-```bash
-# 构建生产环境
-npm run build
-```
-
-打包会出现 dist 文件夹，用 Chrome 浏览器打开 index.html 页面即可
-
-## Browsers support
-
-Modern browsers
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Safari |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| last 2 versions                                                                                                                                                                                                    | last 2 versions                                                                                                                                                                                                | last 2 versions                                                                                                                                                                                                |
-
-## 备注
-
-```javascript
-// 建议首先查看路由文件(了解项目路由以及如何进行动态生成前端路由)
-// 页面查看顺序(登录页（views/Login）-> 首页(views/Home/Dashboard))，其中views/Home为其他页面的公共引用部分
-// 与后端交互接口（请查看service/index.ts，数据由mock.js产生；实际开发请查看util/request.ts）
-// 后台系统包括了登录，异步生成路由，echarts数据可视化，table表增删改查等功能，希望该demo示例可以帮助到有需要的朋友快速上手
-// 根据vue-cli示例，主页面index.vue中会采用vue2的写法，在子组件中则有较大的变化，请仔细查看区别
-```
+- （1）搜索不用回车
+- （2）搜索增加防抖
+- （3）注册全局組件
+- （4）自定义组件 v-model 的用法
+- （5）select 的封装 和多级下拉
+- （6）指令 placeholder 提示的封装
+- （7） provide & inject 跨组件传值父传子 (父子 孙子关系)
+- （8） v-bind="$attrs" v-on="$listeners" 跨组件调用事件（子调用父页面事件） (父子 孙子关系)
+- （9） v-loading element 自带指令 可以直接用
 
 # 自己学习
 
@@ -576,7 +553,7 @@ import "./directives/placeholder.js"; //为空提示
   </el-form-item>
 ```
 
-# provide & inject 跨组件传值
+# provide & inject 跨组件传值 (父子关系)
 
 ### （1）在子组件中 provide 传出去 thisdialog
 
@@ -639,10 +616,41 @@ export default {
 </script>
 ```
 
-### select 获取值
+# v-bind="$attrs" v-on="$listeners" 跨组件调用事件
+
+### 绑定页面
+
+```
+<el-select  v-bind="$attrs" v-on="$listeners" @change="onChange">
+  <template v-for="item in selectList">
+    <el-option :key="item[idKey]" :value="item[idKey]" :label="item[nameKey]" ></el-option>
+  </template>
+</el-select>
 
 ```
 
+### 设置属性
+
+```
+export default {
+  name: 'index',
+  props: ['yes'],
+  //  inheritAttrs：默认值true,继承所有的父组件属性（除props的特定绑定）作为普通的HTML特性应用在
+  //  子组件的根元素上，如果你不希望组件的根元素继承特性设置inheritAttrs: false,但是class属性会继承
+  inheritAttrs: false,
+  methods: {
+    onChange(data) {
+      this.$emit('getListData', data)
+    }
+  }
+```
+
+### 父页面接收 爷爷页面接收
+
+```
+<ys-dialog ref="AssetEditDialog" width="40%" :nopadding="true" title="资产编辑">
+  <AssetEdit ref="assetA1Edit" @getListData="getListData" :formdata="page.selectData"></AssetEdit>
+</ys-dialog>
 ```
 
 # 列表到详情的的关系表
@@ -745,23 +753,30 @@ this.form = Object.assign({},{
 ```
 
 # 卡片用法
+
 ### 页面组件 src\views\AssetsTable\components\AssetsContent.vue
+
 ```
 <ys-dialog ref="cardDialog" width="40%" :nopadding="true" title="查看详情">
       <AssetCard ref="assetCard" :cardData="page.selectData"></AssetCard>
     </ys-dialog>
 ```
-### 点击事件打开弹框  和传递参数  src\views\AssetsTable\components\AssetsContent.vue
+
+### 点击事件打开弹框 和传递参数 src\views\AssetsTable\components\AssetsContent.vue
+
 ```
 public  handleDetails(column,item) {
       this.page.selectData = item;
       this.$refs.cardDialog.show();
     }
 ```
-### 设置选项卡切换  src\views\AssetsTable\components\AssetCard.vue
-* 隐藏底部footer
-* readonly 区分 编辑 和查看详情
-* 还有新增 没有解决
+
+### 设置选项卡切换 src\views\AssetsTable\components\AssetCard.vue
+
+- 隐藏底部 footer
+- readonly 区分 编辑 和查看详情
+- 还有新增 没有解决
+
 ```
 <template>
   <div id="card" class="assetCard flex" style="height:68vh">
@@ -823,4 +838,82 @@ export default {
   padding-right: 20px;
 }
 </style>
+```
+
+# table 排序 空的排最后
+
+### sortable="custom"
+
+### @sort-change="OnSortChane"
+
+```
+    <el-table :data="tableAssetsData" stripe row-key="AUTOID" style="width: 100%" @sort-change="OnSortChane">
+      <el-table-column prop="id" label="序号" sortable="custom" width="80">
+      </el-table-column>
+    </el-table>
+```
+
+### 本地排序事件
+
+```public OnSortChane({ column, prop, order }, deprop = "id") {
+    //本地内存排序
+    // 1. 每次先执行默认排序 id
+    // 2. 通过 prop 排序 [].sort
+    if (order) {
+      this.tableAssetsData.sort((m, n) => {
+        //数字排序
+        if (isFinite(m[prop]) && isFinite(m[prop])) {
+          return n[prop] - m[prop];
+        } else if (n[prop]) {
+          //中文排序
+          return n[prop].localeCompare(m[prop]);
+        } else {
+          return -1; //默认是空值
+        }
+      }); // 数字比较默认是倒叙
+      if (order == "ascending") {
+        this.tableAssetsData.reverse();
+      }
+    }
+```
+### 服务端排序
+
+```
+//设置属性
+data() {
+  return {
+    page: {
+      sort: {
+        strorder: "", //字段
+        ordertype: "" //方向 不为空 就是 desc
+      }
+    }
+  };
+},
+
+//方法
+OnSortChane({ column, prop, order }, deprop = "id") {
+if (!order) prop = "";
+  if (order == "ascending") order = "";
+  this.page.sort = {
+    strorder: prop,
+    ordertype: order
+  };
+  this.getAssetA1Data(); //从新调用方法
+},
+```
+
+# v-loading 指令可以直接用
+
+```
+<template>
+  <div v-loading="true">
+    变更详情
+  </div>
+</template>
+```
+
+# 查看变更  动画不能超过3.9  的版本
+```
+
 ```

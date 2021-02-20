@@ -1,0 +1,61 @@
+.maincard {
+    display: flex;
+    flex-flow: column;
+    /deep/ .el-card__body {
+      flex: 1;
+      position: relative;//如果下面的元素是 100% 需要使用position:absolute
+    }
+}
+.caroverflow{
+  /deep/ .el-card__body {
+    overflow: auto;
+  }
+}
+.cardbody_0 {
+  /deep/ .el-card__body {
+    padding: 0px;
+  }
+}
+.alltransition{
+    transition:all 0.3s;
+}
+.lefttoggle {
+  float: right;
+  padding: 3px 3px;
+}
+.collapsed {
+  /deep/ .el-card__body {
+    display: none;
+  }
+  /deep/ .headerdiv {
+    display: flex;
+    flex-direction: column-reverse;
+    span {
+      margin-left: -5px;
+    }
+    .lefttoggle {
+      margin-left: -5px;
+      width: 20px;
+      height: 20px;
+    }
+    i {
+      transform: rotateY(180deg);
+    }
+  }
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+.main {
+  flex: 1;
+  position: relative;
+  margin-bottom: 10px;
+  overflow: auto;
+}
+.poA{
+    position: absolute;
+}
+.foot {
+  text-align: right;
+}

@@ -18,6 +18,11 @@ module.exports = {
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {//GZIP压缩
       return {
+        resolve: {
+          alias: {
+            "@": resolve("src")
+          }
+        },
         plugins: [new CompressionWebpackPlugin({
           test: /\.(js|css)(\?.*)?$/i,  //需要压缩的文件正则
           threshold: 10240,  //文件大小大于这个值时启用压缩

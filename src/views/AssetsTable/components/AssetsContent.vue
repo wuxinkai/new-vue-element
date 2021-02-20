@@ -67,20 +67,20 @@
       </el-table-column>
     </el-table> -->
 
-    <el-table :data="tableAssetsData" style="width: 100%">
-      <el-table-column prop="id" label="序号" width="80">
+    <el-table :data="tableAssetsData" stripe row-key="AUTOID" style="width: 100%" @sort-change="OnSortChane">
+      <el-table-column prop="id" label="序号" sortable="custom" width="80">
       </el-table-column>
-      <el-table-column prop="ASSET_A1_30" label="系统资产编号" width="120">
+      <el-table-column prop="ASSET_A1_30" sortable="custom" label="系统资产编号" width="150">
       </el-table-column>
-      <el-table-column prop="ASSET_A1_20" label="资产名称" width="180">
+      <el-table-column prop="ASSET_A1_20" sortable="custom" label="资产名称" width="180">
       </el-table-column>
-      <el-table-column prop="ASSET_A1_60" label="存放地点">
+      <el-table-column prop="ASSET_A1_60" sortable="custom" label="存放地点">
       </el-table-column>
-      <el-table-column prop="ASSET_A1_10" label="数量">
+      <el-table-column prop="ASSET_A1_10" sortable="custom" label="数量">
       </el-table-column>
-      <el-table-column prop="ASSET_A1_280" label="库存状态">
+      <el-table-column prop="ASSET_A1_280" sortable="custom" label="库存状态">
       </el-table-column>
-      <el-table-column label="操作" >
+      <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="info" size="mini" @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit">编辑</el-button>
           <el-button type="info" size="mini" @click="handleDetails(scope.$index, scope.row)" icon="el-icon-tickets">详情</el-button>
@@ -96,6 +96,10 @@
     <ys-dialog ref="cardDialog" width="40%" :nopadding="true" title="查看详情">
       <AssetCard ref="assetCard" :cardData="page.selectData"></AssetCard>
     </ys-dialog>
+
+    <ys-dialog ref="searchDialog" width="60%" :nopadding="true" title="高级搜索查询">
+      <AssetSearch ref="assetSearch"></AssetSearch>
+    </ys-dialog>
   </div>
 </template>
 
@@ -103,10 +107,11 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import AssetEdit from "./AssetEdit.vue";
 import AssetCard from "./AssetCard.vue";
+import AssetSearch from "./AssetSearch/index";
 import service from "@/service/index";
 
 @Component({
-  components: { AssetEdit,AssetCard},
+  components: { AssetEdit, AssetCard, AssetSearch },
 })
 export default class AdminContent extends Vue {
   @Prop() private tableAssetsData!: Array<object>;
@@ -123,14 +128,18 @@ export default class AdminContent extends Vue {
         selection: [], //选择的数据
         sort: {
           strorder: "", //字段
-          ordertype: "" //方向 不为空 就是 desc
-        }
+          ordertype: "", //方向 不为空 就是 desc
+        },
+      },
+      sort: { //排序
+        strorder: "", //字段
+        ordertype: "", //方向 不为空 就是 desc
       },
       //数据
       data: {
         sysAssetA1Data: [], //列数据
-        assetA1data: [] //表数据
-      }
+        assetA1data: [], //表数据
+      },
     };
   }
   //编辑功能
@@ -138,13 +147,46 @@ export default class AdminContent extends Vue {
     this.page.selectData = row;
     this.$refs.AssetEditDialog.show();
   }
-   //打开资产卡片
-  public  handleDetails(column,item) {
-      this.page.selectData = item;
-      this.$refs.cardDialog.show();
-    }
+  //打开资产卡片
+  public handleDetails(column, item) {
+    this.page.selectData = item;
+    this.$refs.cardDialog.show();
+  }
+  public showAssetA1Search(item) {
+    this.$refs.searchDialog.show();
+  }
   //删除功能
   public handleDel(column, row) {}
+  //排序
+  public OnSortChane({ column, prop, order }, deprop = "id") {
+    //本地内存排序
+    // 1. 每次先执行默认排序 id
+    // 2. 通过 prop 排序 [].sort
+    if (order) {
+      this.tableAssetsData.sort((m, n) => {
+        //数字排序
+        if (isFinite(m[prop]) && isFinite(m[prop])) {
+          return n[prop] - m[prop];
+        } else if (n[prop]) {
+          //中文排序
+          return n[prop].localeCompare(m[prop]);
+        } else {
+          return -1; //默认是空值
+        }
+      }); // 数字比较默认是倒叙
+      if (order == "ascending") {
+        this.tableAssetsData.reverse();
+      }
+    }
+
+    //服务端排序
+    // if (!order) prop = "";
+    // if (order == "ascending") order = "";
+    // this.page.sort = {
+    //   strorder: prop,
+    //   ordertype: order
+    // };
+  }
 }
 </script>
 
