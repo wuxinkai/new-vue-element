@@ -876,6 +876,7 @@ export default {
       }
     }
 ```
+
 ### 服务端排序
 
 ```
@@ -913,7 +914,128 @@ if (!order) prop = "";
 </template>
 ```
 
-# 查看变更  动画不能超过3.9  的版本
+#### 关闭
+
 ```
 
+```
+
+# 查看变更 动画不能超过 3.9 的版本
+
+```
+
+```
+
+# 折叠按钮
+
+### 组件 src\components\element\asidetoggle
+
+```
+<template>
+  <el-button class="lefttoggle" size="small" circle icon="el-icon-arrow-left" @click="onlefttoggle"></el-button>
+</template>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+  //外部属性
+  props: {
+    width: String
+  },
+  model: {
+    prop: "width",
+    event: "change"
+  },
+  //内部方法
+  methods: {
+    initPage() { },
+    onlefttoggle() {
+      //获取父元素的上面的内容
+      const aiside = this.$parent.$parent;
+      if (!aiside.collapsed) {
+        if (!aiside.initWidth) aiside.initWidth = this.width;
+        this.$emit("change", "70px");
+        aiside.$el.classList.add("collapsed");
+      } else {
+        this.$emit("change", aiside.initWidth);
+        aiside.$el.classList.remove("collapsed");
+      }
+      aiside.collapsed = !aiside.collapsed;
+      this.$emit("onToggle", aiside.collapsed);
+    }
+  },
+};
+</script>
+
+<style lang="less" scoped>
+</style>
+```
+
+### 折叠按钮注册全局
+
+```
+import asidetoggleComponent from "./asidetoggle";
+
+//右侧收起
+export const asidetoggle = {
+  install: function(Vue) {
+    Vue.component("ysAsideToggle", asidetoggleComponent);
+  }
+};
+```
+
+### 挂载到项目上
+
+挂载路径 src\plugins\element.js
+
+```
+
+```
+
+# 项目外壳
+
+### 模板 components\AssetSearch\index.vue
+
+```
+<template>
+  <ys-layout style="height:60vh">
+    <ys-layout-left title="资产字段" width="240px">
+     内容
+    </ys-layout-left>
+    <ys-layout-main title="资产信息">
+     内容
+    </ys-layout-main>
+  </ys-layout>
+</template>
+```
+
+### 组件
+
+```
+
+```
+
+# element 跨页多选 row-key
+
+```
+ row-key="System_10_10"
+```
+
+# Promise 特性
+
+### Promise.all() //一个失败就都返回了
+
+### Promise.race()，//只要有一个成功就都返回了
+
+### Promise.allSettled() //无论是成功还是失败都会执行 所有内容都执行完成后，再往下执行
+
+```
+this.$refs.form.elform.validate(async valid => {
+    await Promise.allSettled(
+      //这里代码全部执行完成 才会弹出底部提示
+    );
+    this.$message("保存成功"); //提示
+});
 ```

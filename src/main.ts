@@ -14,6 +14,8 @@ import "./directives/placeholder.js"; //为空提示
 // 引入样式
 
 
+
+import './style/base.css'
 import 'font-awesome/css/font-awesome.css'
 import "./style/transition.css"; //
 // 引入axios

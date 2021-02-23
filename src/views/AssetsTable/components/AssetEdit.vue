@@ -16,7 +16,7 @@
                       <span> {{ form[formItem.SYS_ASSET_A1_160] }}</span> <span class="float_right">处理select下拉菜单</span>
                     </template>
                     <template v-else>
-                     <p><span> {{ form[formItem.SYS_ASSET_A1_160] }}</span> <span  class="float_right"> 处理input</span></p>
+                      <p><span> {{ form[formItem.SYS_ASSET_A1_160] }}</span> <span class="float_right"> 处理input</span></p>
                     </template>
                   </template>
                   <!-- 编辑 -->
@@ -178,6 +178,10 @@ export default {
       // console.log(this.form) //  只能获取到 ASSET_A1_100 的数字改变不能获取到，页面值得变化
       this.$refs.form.validate(async valid => {
         if (valid) {
+          //Promise.all() //一个失败就都返回了
+          //Promise.race()，//只要有一个成功就都返回了
+          // Promise.allSettled() //无论是成功还是失败都会执行 所有内容都执行完成后，再往下执行
+
           // const res = await AssetA1.Save(this.form);
           // res.strMS && this.$message(res.strMS); //提示
           // this.form.ASSET_A1_AUTOID = parseInt(res.strMsId); //赋值
@@ -223,7 +227,7 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.float_right{
+.float_right {
   float: right;
 }
 

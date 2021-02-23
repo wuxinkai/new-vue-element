@@ -25,6 +25,7 @@
     padding-left: 0px;
     padding-right: 0px;
 }
+
 .button-new-tag{
     margin-left: 10px;
     height: 32px;
@@ -32,12 +33,14 @@
     padding-top: 0;
     padding-bottom: 0;
 }
+
 .vW{
     width: 100%;
 }
 .vWimp{
     width: 100% !important;
 }
+
 .vH{
     height: 100%;
-}
+} 
