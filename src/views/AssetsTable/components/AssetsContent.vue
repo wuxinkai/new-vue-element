@@ -67,7 +67,9 @@
       </el-table-column>
     </el-table> -->
 
-    <el-table :data="tableAssetsData" stripe row-key="AUTOID" style="width: 100%" @sort-change="OnSortChane">
+    <el-table :data="tableAssetsData" stripe row-key="AUTOID" style="width: 100%" @selection-change="handleSelectionChange" @sort-change="OnSortChane">
+      <el-table-column type="selection" width="55">
+      </el-table-column>
       <el-table-column prop="id" label="序号" sortable="custom" width="80">
       </el-table-column>
       <el-table-column prop="ASSET_A1_30" sortable="custom" label="系统资产编号" width="150">
@@ -100,6 +102,10 @@
     <ys-dialog ref="searchDialog" width="60%" :nopadding="true" title="高级搜索查询">
       <AssetSearch ref="assetSearch"></AssetSearch>
     </ys-dialog>
+
+    <ys-dialog ref="updateDialog" width="60%" :nopadding="true" title="批量修改">
+      <AssetsUpdate ref="batchUpdate" :updateData="page.selection"></AssetsUpdate>
+    </ys-dialog>
   </div>
 </template>
 
@@ -107,11 +113,12 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import AssetEdit from "./AssetEdit.vue";
 import AssetCard from "./AssetCard.vue";
+import AssetsUpdate from "./AssetsUpdate/index";
 import AssetSearch from "./AssetSearch/index";
 import service from "@/service/index";
 
 @Component({
-  components: { AssetEdit, AssetCard, AssetSearch },
+  components: { AssetEdit, AssetCard, AssetSearch, AssetsUpdate },
 })
 export default class AdminContent extends Vue {
   @Prop() private tableAssetsData!: Array<object>;
@@ -131,7 +138,8 @@ export default class AdminContent extends Vue {
           ordertype: "", //方向 不为空 就是 desc
         },
       },
-      sort: { //排序
+      sort: {
+        //排序
         strorder: "", //字段
         ordertype: "", //方向 不为空 就是 desc
       },
@@ -142,6 +150,7 @@ export default class AdminContent extends Vue {
       },
     };
   }
+
   //编辑功能
   public handleEdit(column, row) {
     this.page.selectData = row;
@@ -155,6 +164,19 @@ export default class AdminContent extends Vue {
   public showAssetA1Search(item) {
     this.$refs.searchDialog.show();
   }
+  //是否是多选
+  public handleSelectionChange(val) {
+    this.page.selection = val;
+  }
+  //批量修改
+  public getUpdate() {
+    if (this.page.selection.length == 0) {
+      this.$message.warning("请至少选择一条数据。");
+      return;
+    }
+    this.$refs.updateDialog.show();
+  }
+
   //删除功能
   public handleDel(column, row) {}
   //排序

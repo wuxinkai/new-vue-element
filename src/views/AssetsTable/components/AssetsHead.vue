@@ -8,7 +8,7 @@
         <el-button type="primary" size="small" v-debounce @click="onBtnClick" icon="el-icon-plus">新增</el-button>
         <el-button type="primary" size="small" @click="onBtnSearch" icon="el-icon-search">高级查询</el-button>
         <el-button type="primary" size="small" icon="el-icon-delete">批量删除</el-button>
-        <el-button type="primary" size="small" icon="el-icon-edit">批量修改</el-button>
+        <el-button type="primary" size="small" icon="el-icon-edit" @click="showbatchUpdate">批量修改</el-button>
         <el-button type="info" size="small" icon="el-icon-document">导出Excel</el-button>
         <el-button type="info" size="small" icon="el-icon-takeaway-box">导出Zip</el-button>
       </el-form-item>
@@ -50,11 +50,16 @@ export default class AdminHead extends Vue implements Admin {
   }
   //高级搜索
   public onBtnSearch() {
-    this.$emit("handleSearch")
+    this.$emit("handleSearch");
   }
 
   private created() {
     this.getAssets();
+  }
+
+  //打开批量修改
+  private showbatchUpdate() {
+    this.$emit("handleUpdate");
   }
 }
 </script>

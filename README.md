@@ -1039,3 +1039,110 @@ this.$refs.form.elform.validate(async valid => {
     this.$message("保存成功"); //提示
 });
 ```
+
+# 本地搜索
+
+```
+<template>
+  <el-table ref="table" border :data="tableData" row-key="sysCode" height="100%" >
+      <template slot="header" slot-scope="scope">
+        <el-input v-model="page.search" size="small" placeholder="输入关键字搜索" clearable />
+      </template>
+    </el-table-column>
+  </el-table>
+</template>
+```
+
+#### 利用 search 方法进行搜索
+
+```
+ //计算属性
+  computed: {
+    //分页后的数据
+    tableData() {
+      let _data = [];
+      _data = this.data.sysAssetA1Data;
+      if (this.page.search) {
+        _data = _data.search({
+          SYS_ASSET_A1_50: val => val.includes(this.page.search)
+        });
+      }
+      return _data;
+    }
+  },
+```
+
+# vue 操作 dom
+
+## 通过 this
+
+### 自己设置样式
+
+```
+  _this.$el.style.zIndex = 12
+```
+
+### 给父元素设置样式
+
+```
+this.$parent.$el.style.zIndex = 12
+```
+
+### 获取爷爷
+
+```
+this.$parent.$parent.$el
+```
+
+### 添加 class
+
+```
+  this.$el.classList.add("collapsed");
+```
+
+### 删除 class
+
+```
+this.$el.classList.remove("collapsed");
+```
+### $ref
+```
+ this.$refs.select.$children[0].disabled
+```
+
+## 通过 操作按钮
+
+```
+<span v-show="depart" v-on:click="searchDepart($event)">部门</span>
+```
+
+```
+   e.target; //是你当前点击的元素
+    e.currentTarget; //是你绑定事件的元素
+
+    //获得点击元素的前一个元素
+    e.currentTarget.previousElementSibling
+    //类似前前一个元素
+    e.currentTarget.previousElementSibling.previousElementSibling
+
+    //获得点击元素的第一个子元素
+    e.currentTarget.firstElementChild
+
+    //获得点击元素的下一个元素
+    e.currentTarget.nextElementSibling;
+    //类似下下个元素
+    e.currentTarget.nextElementSibling.nextElementSibling
+    　　
+    //获得点击元素中id为string的元素
+    e.currentTarget.getElementById("string")
+  　　
+    //获得点击元素的string属性
+    e.currentTarget.getAttributeNode('string')
+     　　
+    //获得点击元素的父级元素
+
+```
+
+# 动态插入form表单
+```
+```

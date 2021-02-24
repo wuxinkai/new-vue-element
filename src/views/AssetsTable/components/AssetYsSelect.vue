@@ -1,5 +1,19 @@
 <template>
-  <ys-select ref="select" :selectList="page.DataSource" :idKey="page.DataValueField" :nameKey="page.DataTextField" :pIdKey="page.TreeLevelField" :cascader="true" :disabledKey="page.DisabledField" :loading="page.loading" filterable emitPath v-model="page.SelectValue" v-bind="$attrs" @change="onChange">
+  <ys-select 
+  ref="select" 
+  :selectList="page.DataSource"
+   :idKey="page.DataValueField"
+    :nameKey="page.DataTextField"
+     :pIdKey="page.TreeLevelField" 
+     :cascader="true" 
+     :disabledKey="page.DisabledField"
+      :loading="page.loading" 
+      filterable 
+      emitPath 
+      v-model="page.SelectValue" 
+      v-bind="$attrs"
+       @change="onChange"
+       >
   </ys-select>
 </template>
 
@@ -44,8 +58,9 @@ export default {
   methods: {
     // initPage() {},
     // 对select 进行设置
-    async getDataSourceTow(num) {
+    async getDataSourceTow() {
       let _this = this
+      // debugger
       if (_this.sysAssetAItem.SYS_ASSET_A1_170 == 'Select') {
         let [it] = AssetSelectData.filter((item, index) => item.codeId === _this.sysAssetAItem.SYS_ASSET_A1_60)
         Object.assign(_this.page, { ...it });
@@ -83,7 +98,7 @@ export default {
       immediate: true
     },
     //监听数据变化
-     "page.SelectValue"(val) {
+    "page.SelectValue"(val) {
       const text = this.$refs.select.getSeleteText();
       this.$emit("onChange", val, text);
     }

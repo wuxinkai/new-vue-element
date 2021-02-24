@@ -55,6 +55,7 @@ export default {
     flex-flow: column;
     /deep/ .el-card__body {
       flex: 1;
+      overflow: auto; //子组件做到auto 不用设置高度出现滚动条
       position: relative;//如果下面的元素是 100% 需要使用position:absolute
     }
 }

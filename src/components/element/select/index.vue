@@ -1,5 +1,4 @@
 <template>
-  <div>
     <!-- 下拉选择框 -->
     <el-select v-if="!pIdKey" :disabled="loading" v-nulltext v-model="page.inputVal" :style="`width:${width}`" v-bind="$attrs" v-on="$listeners" @change="onChange">
       <template v-for="item in selectList">
@@ -8,7 +7,6 @@
     </el-select>
     <!-- 下拉选择树 -->
     <el-cascader v-else-if="cascader" :disabled="loading" v-nulltext :props="{ ...$attrs }" :options="options" v-model="page.inputVal" :style="`width:${width}`" v-bind="$attrs" v-on="$listeners" @change="onChange"></el-cascader>
-  </div>
 </template>
 <script>
 import { isArray, isArrayEmpty } from "@/util/validate";  //isArray是否是数组   isArrayEmpty是否是空数组

@@ -1,6 +1,6 @@
 <template>
   <div class="assets vH">
-    <assets-head @getHeadData='getHeadData' @handleSearch="handleSearch" ref="child" :page='page'></assets-head>
+    <assets-head @getHeadData='getHeadData' @handleSearch="handleSearch" @handleUpdate="handleUpdate" ref="child" :page='page'></assets-head>
     <assets-content ref="assetsCon" :tableAssetsData="handleTableAssetsData" :listLoading="listLoading" @contentFlush='contentFlush'></assets-content>
     <div class="block"></div>
     <!-- <el-container>
@@ -40,6 +40,10 @@ export default {
     //点击高级搜索弹窗
     handleSearch() {
       this.$refs.assetsCon.showAssetA1Search()
+    },
+    //批量修改
+    handleUpdate() {
+      this.$refs.assetsCon.getUpdate()
     },
     contentFlush() {
 

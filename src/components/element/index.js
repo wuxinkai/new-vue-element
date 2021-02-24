@@ -5,6 +5,7 @@ import asidetoggleComponent from "./asidetoggle";
 import elLayoutComponent from "./elLayout";
 import elLayoutLeftComponent from "./elLayout/components/left.vue";
 import elLayoutMainComponent from "./elLayout/components/main.vue";
+import formComponent from "./form";
 //窗口
 export const ysdialog = {
   install: function (Vue) {
@@ -45,5 +46,12 @@ export const elLayoutLeft = {
 export const elLayoutMain = {
   install: function(Vue) {
     Vue.component("ysLayoutMain", elLayoutMainComponent);
+  }
+};
+
+//动态表单布局
+export const meiform = {
+  install: function(Vue) {
+    Vue.component("ysForm", formComponent);
   }
 };

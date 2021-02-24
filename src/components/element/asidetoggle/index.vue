@@ -15,9 +15,21 @@ export default {
     prop: "width",
     event: "change"
   },
+  mounted() {
+    this.$el.addEventListener('onkeydown', this.onkeydown)
+    this.$el.addEventListener('onkeyup', this.onkeydown)
+  },
   //内部方法
   methods: {
     initPage() { },
+    onkeydown(e) {
+      let keynum = e.keyCode
+      console.log(keynum)
+    },
+    onkeyup(e) {
+      let keynum2 = e.keyCode
+      console.log(keynum2)
+    },
     onlefttoggle() {
       //获取父元素的上面的内容
       const aiside = this.$parent.$parent;

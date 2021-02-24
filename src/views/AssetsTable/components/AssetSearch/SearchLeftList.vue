@@ -1,5 +1,5 @@
 <template>
-  <el-table ref="table" v-loading="page.loading" border :data="tableSingleData" row-key="sysCode" height="100%" style="position:absolute" highlight-current-row @row-click="OnrowClick" @selection-change="onSelectionChange" @select="onSelect" @select-all="onSelect">
+  <el-table ref="table" v-loading="page.loading" border :data="tableData" row-key="sysCode" height="100%" style="position:absolute" highlight-current-row @row-click="OnrowClick" @selection-change="onSelectionChange" @select="onSelect" @select-all="onSelect">
     <!-- 判断是不是多选 -->
     <el-table-column v-if="showselect" type="selection" width="40"></el-table-column>
     <!-- 序号 -->
@@ -59,8 +59,23 @@ export default {
       this.$emit("onSelectionChange", rows);
     },
     //
-    onSelect() {
-
+    onSelect(rows, row) {
+      //全选清除
+     if (rows.length == 0) {
+        this.$emit("onSelectClear");
+        return;
+      }
+      //单选  和删除
+      if (row) {
+        const selected = rows.includes(row);  //includes() 方法用于判断字符串是否包含指定的子字符串。
+        this.$emit("onSelect", rows, row, selected);
+      } else {
+        //全选
+        rows.forEach(item => {
+          const selected = true;
+          this.$emit("onSelect", rows, item, selected);
+        });
+      }
     }
   },
   mounted() {
@@ -68,7 +83,15 @@ export default {
   },
 
   computed: {
-
+    tableData() {
+      let _data = [];
+      _data = this.tableSingleData;
+      if (this.page.search) {
+        //利用 原型上的方法  页面中的方法 src\util\extend.js
+        _data = _data.search({ sysName: val => val.includes(this.page.search) });
+      }
+      return _data;
+    }
   },
 
 }

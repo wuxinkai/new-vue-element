@@ -2,6 +2,10 @@
  * 数组筛选
  * @param {Object}} {item:{type:"",vla:""}}
  * @return {Array} []
+ * 接收object参数，多属性之间是and关系，
+1.可以直接 字段:值 等于匹配
+2.可以 字段:{type,vla} 指定匹配
+3.可以 字段:function() 自定义匹配
  */
 Array.prototype.search = function(searchdata) {
   let t = this;
@@ -35,7 +39,6 @@ Array.prototype.search = function(searchdata) {
     }
   };
   let data = t.filter(item => {
-    // debugger
     return Object.keys(searchdata).every(i => {
       let { type = "等于", val = searchdata[i] } = searchdata[i];
       let fn = typefn[type];
