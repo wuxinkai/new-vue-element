@@ -1,6 +1,7 @@
 <template>
   <div class="update vH flex-column">
     <el-row>
+    
       <ys-form class v-loading="page.loading" ref="form" :colnub="2" :model="form" size="medium" :rules="rules">
         <!-- prop的作用是父组件向子组件单向传递数据 -->
         <el-form-item v-for="(col, index) in page.cols" :key="index" :label="col.sysName" :prop="col.SYS_ASSET_A1_160">
@@ -24,7 +25,6 @@
               <el-divider direction="vertical"></el-divider>
             </span>
              <!-- el-divider分割线 -->
-         
            
             {{ form[col.prop] }}
             {{ form[col.prop] }}

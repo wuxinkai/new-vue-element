@@ -1,32 +1,39 @@
-.aside_border{
-    border-right:1px solid #f0f0f0;
-    padding-right:10px;
+.aside_border {
+    border-right: 1px solid #f0f0f0;
+    padding-right: 10px;
 }
-.tree_top_border{
-    border-top:1px solid #f0f0f0;
-    padding-top:10px;
+
+.tree_top_border {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 10px;
 }
-.padding_10{
+
+.padding_10 {
     padding: 10px !important;
 }
-.padding_top_10{
+
+.padding_top_10 {
     padding-top: 10px !important;
 }
-.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content{
+
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
     background-color: #f0f0f0;
 }
-.el-tree-node__content{
+
+.el-tree-node__content {
     height: 32px;
 }
-.align-right{
+
+.align-right {
     text-align: right;
 }
-.el-main_padding1{
+
+.el-main_padding1 {
     padding-left: 0px;
     padding-right: 0px;
 }
 
-.button-new-tag{
+.button-new-tag {
     margin-left: 10px;
     height: 32px;
     line-height: 30px;
@@ -34,13 +41,29 @@
     padding-bottom: 0;
 }
 
-.vW{
+.vW {
     width: 100%;
 }
-.vWimp{
+
+.vWimp {
     width: 100% !important;
 }
 
-.vH{
+.vH {
     height: 100%;
-} 
+}
+
+/* 弹框样式 */
+.confirm-box {
+    background: pink;
+}
+
+.confirm-img-show {
+    display: block;
+    width: 36px;
+    height: 36px;
+    align-self: center;
+    background: url('../assets/images/marker_1.png') no-repeat;
+    background-size: 100%;
+}
+

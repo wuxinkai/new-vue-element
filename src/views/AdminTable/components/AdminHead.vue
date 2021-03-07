@@ -7,6 +7,7 @@
       <el-form-item>
         <el-button type="primary" @click="getAdmin" size="small" icon="el-icon-search">查询</el-button>
         <el-button type="primary" @click="visible=true" size="small" icon="el-icon-plus">新增</el-button>
+     
         <el-button :loading="downloadLoading" type="info" @click="handleDownloadExcel" size="small" icon="el-icon-document">导出Excel</el-button>
         <el-button :loading="downloadLoading1" type="info" @click="handleDownloadZip" size="small" icon="el-icon-takeaway-box">导出Zip</el-button>
       </el-form-item>
@@ -17,42 +18,43 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import service from '@/service/index'
-import AddAdmin from './AddAdmin/AddAdmin.vue'
-import downloadMixins from '../mixins/download'
+import { Component, Prop, Vue } from "vue-property-decorator";
+import service from "@/service/index";
+import AddAdmin from "./AddAdmin/AddAdmin.vue";
+import downloadMixins from "../mixins/download";
 
 interface Admin {
-  form: Object
-  visible: Boolean
+  form: Object;
+  visible: Boolean;
 }
 
 @Component({
   components: { AddAdmin },
-  mixins: [downloadMixins]  // 混入下载为excel和zip的方法（handleDownloadExcel/handleDownloadZip）
+  mixins: [downloadMixins], // 混入下载为excel和zip的方法（handleDownloadExcel/handleDownloadZip）
 })
-export default class AdminHead extends Vue implements Admin{
-  @Prop() private page !: number
+export default class AdminHead extends Vue implements Admin {
+  @Prop() private page!: number;
 
-  downloadData: Array<any> = []  // 该数据用于mixin中的方法调用（该处可不定义）
+  downloadData: Array<any> = []; // 该数据用于mixin中的方法调用（该处可不定义）
 
   form = {
-    id: '',
-  }
+    id: "",
+  };
 
-  visible = false  // 添加对话框是否可见
-  
+  visible = false; // 添加对话框是否可见
+
   // 请求table数据
   public getAdmin() {
-    let params = Object.assign({}, this.form, {page: this.page })
-    service.getAdminList(params).then(res => {
-      this.downloadData = res.result['admins']
-      this.$emit('getHeadData', res, false)
-    })
+    let params = Object.assign({}, this.form, { page: this.page });
+    service.getAdminList(params).then((res) => {
+      this.downloadData = res.result["admins"];
+      this.$emit("getHeadData", res, false);
+    });
   }
 
+
   private created() {
-    this.getAdmin()
+    this.getAdmin();
   }
 }
 </script>
@@ -62,7 +64,7 @@ export default class AdminHead extends Vue implements Admin{
   flex: 0 0 50px;
   width: 100%;
   margin: 10px 0;
-  background-color:rgba(	176,196,222, 0.3);
+  background-color: rgba(176, 196, 222, 0.3);
 
   &Form {
     margin: 20px 10px 10px 10px;
@@ -73,5 +75,4 @@ export default class AdminHead extends Vue implements Admin{
 .el-form-item {
   margin-bottom: 10px;
 }
-
 </style>

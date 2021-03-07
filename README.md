@@ -553,9 +553,9 @@ import "./directives/placeholder.js"; //为空提示
   </el-form-item>
 ```
 
-# provide & inject 跨组件传值 (父子关系)
+# provide & inject 用于父组件向子孙组件传递数据(跨级访问父组件)
 
-### （1）在子组件中 provide 传出去 thisdialog
+### （1）父亲组件中 provide 传出去 thisdialog
 
 ```
 <script>
@@ -567,6 +567,7 @@ export default {
   props: {
 
   },
+  //父组件 通过provide 降自己的的数据以对象的形式传递出去
   provide() {
     return {
       thisdialog: this
@@ -587,7 +588,7 @@ export default {
 </script>
 ```
 
-### （2）另一个子组件接收 inject: [ "thisdialog"],
+### （2）孙子组件接收 inject: [ "thisdialog"],
 
 ```
 <script>
@@ -1105,7 +1106,9 @@ this.$parent.$parent.$el
 ```
 this.$el.classList.remove("collapsed");
 ```
-### $ref
+
+### \$ref
+
 ```
  this.$refs.select.$children[0].disabled
 ```
@@ -1143,6 +1146,162 @@ this.$el.classList.remove("collapsed");
 
 ```
 
-# 动态插入form表单
+# 动态插入 form 表单
+
 ```
+  <ys-form class v-loading="page.loading" ref="form" :colnub="2" :model="form" size="medium" :rules="rules">
+    <!-- prop的作用是父组件向子组件单向传递数据 -->
+    <el-form-item v-for="(col, index) in page.cols" :key="index" :label="col.sysName" :prop="col.SYS_ASSET_A1_160">
+      <el-input v-if="!col.sysSelect && col.sysType != 'Date'" v-nulltext v-model="form[col.SYS_ASSET_A1_160]" clearable v-debounce @input="onInput"></el-input>
+      <!-- 日期 -->
+      <el-date-picker v-if="!col.sysSelect &&  col.sysType == 'Date' " v-model="form[col.SYS_ASSET_A1_160]" align="right" type="date" v-nulltext class="vWimp">
+      </el-date-picker>
+      <!-- 下拉选择框 -->
+      <AssetYsSelect v-else-if="col.sysSelect" @onChange="(...ags) => {onInput(...ags, col.SYS_ASSET_A1_160);}" v-model="form[col.SYS_ASSET_A1_160]" :multiple="true" clearable :sysAssetAItem="col"></AssetYsSelect>
+    </el-form-item>
+  </ys-form>
+```
+
+### 组件
+
+```
+<!--<template>
+  <el-form label-width="100px" label-position="left">
+    <el-row v-for="(row, index) in formrow" :key="index" :gutter="20">
+      <el-col v-for="(col, i) in row" :key="col.AUTOID" :span="12">
+        <slot></slot>
+       插槽
+      </el-col>
+    </el-row>
+  </el-form>
+</template>-->
+<script>
+export default {
+  name: "meiform",
+  data() {
+    return {
+
+      elform: {}
+    };
+  },
+  //外部属性
+  props: {
+    //列数 接收参数
+    colnub: {
+      type: Number,
+      default() {
+        return 2;
+      }
+    },
+  },
+  //生成dom表单
+  render(h) {
+    //计算的行 和 列 [[form-item],[form-item]] newrow[0][0]
+    let newrow = [] //  newrow == 上面的this.formrow
+    let span = 12; //一列分为多少份 element 是24格
+    if (this.$slots.default) {
+      const len = this.$slots.default.length, //插槽的长度
+        //一行的长度
+        count = this.colnub, lineNum = len % count === 0 ? len / count : Math.floor(len / count + 1); //算出有行数 ，如果不够后面加1
+      //能整除就 24直接除以变量， 如果整除不了就减一再除
+      span = 24 % count === 0 ? 24 / count : Math.floor(24 / count - 1); //行数
+      //循环
+      for (let i = 0; i < lineNum; i++) {
+        const temp = this.$slots.default.slice(i * count, i * count + count);
+        newrow.push(temp);
+      }
+    }
+
+    //（1）第一层form  拼接上面的dom <el-form label-width="100px" label-position="left">
+    const html = h("el-form", {
+      // attrs 是普通html的属性
+
+      props: { //组件属性
+        //注意驼峰写法
+        labelWidth: "100px",
+        labelPosition: "left",
+        //属性
+        ...this.$attrs //属性继承
+      },
+      on: { ...this.$listeners }, //事件
+      ref: "elform"
+    },
+    //（2）第二层   <el-row v-for="(row, index) in formrow" :key="index" :gutter="20">
+    //子组件 是个数组 map函数返回的就是一个数组
+      newrow.map((row, index) => {
+        //行
+        return h("el-row", {
+          props: {
+            gutter: 20 //间隔20px
+          },
+          key: index //防止重复的dom 不渲染
+        },
+        // （3）第三层  <el-col v-for="(col, i) in row" :key="col.AUTOID" :span="12">
+          row.map((col, i) =>
+            //列
+            h("el-col", {
+              props: { span: span },
+              key: i
+            },
+            // 第四层 插槽
+              [col] //插槽
+            )
+          )
+        );
+      })
+    );
+    //返回elform
+    this.$nextTick(() => {
+      this.elform = this.$refs.elform;
+    });
+
+    return html
+  },
+  //初始化 异步加async await
+  methods: {
+    initPage() { }
+  },
+  //初始化 异步加async await
+  mounted() {
+    this.initPage();
+  },
+}
+</script>
+```
+
+### 注册组件
+
+```
+//动态表单布局
+export const meiform = {
+  install: function(Vue) {
+    Vue.component("ysForm", formComponent);
+  }
+};
+```
+
+### 第四步和第五步省略
+
+```
+
+```
+
+# 数据驱动 dom 的必要条件
+
+```
+item:{
+  value:'',//要保留的值
+  type:'',分类, input  select data
+  name:'',要显示在页面的名字,
+  label:"",标题名,
+  list:[ //select 选中的字段
+    {}
+  ],
+  item:{}, //原来的值
+}
+```
+
+# 拆分 el-table 的表格 给表头 和表格内增加内容
+```
+
 ```
