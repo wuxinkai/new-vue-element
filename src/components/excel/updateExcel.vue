@@ -22,7 +22,6 @@ export default {
     change(e) {
       const files = e.target.files;
       let fileReader = new FileReader();
-
       fileReader.onload = async ev => {
         const data = ev.target.result;
         const workbook = new Excel.Workbook();
@@ -67,7 +66,6 @@ export default {
     //下载模板
     async downLoad(data, title = 'download') {
       //创建文件
-      debugger
       const workbook = new Excel.Workbook();
       //新建页签
       const sheet = workbook.addWorksheet('Sheet1');

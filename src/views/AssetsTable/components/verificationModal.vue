@@ -31,6 +31,8 @@
               </template>
               <!-- 收起显示详细错误 -->
               <template v-else-if="!page.showerror">
+                <el-progress style="width:120px;display:inline-block" :percentage="Math.floor((1 - scope.row.errorRow.length / column.length) * 100)" color="#67c23a">
+                </el-progress>
                 <el-popover placement="right" width="400" trigger="hover">
                   <el-tag v-for="(item, index) in scope.row.errorRow" :key="index" type="warning">{{ item }}
                   </el-tag>
@@ -41,9 +43,7 @@
               </template>
             </template>
           </el-table-column>
-          <!-- <template v-for="item in column">
-            <el-table-column :key="item.AUTOID" :prop="item.prop" :label="item.label"></el-table-column>
-          </template> -->
+
           <template v-for="item in column">
             <el-table-column :key="item.prop" :prop="item.prop" :label="item.label">
               <!-- 设置表头 -->
@@ -225,8 +225,14 @@ export default {
           it.errorRow.push(`字段[${label}]不能为空;`)
         }
         //不是日期格式
-        if (!it.name2.includes('A2')) {
-          // it.errorRow.push(`字段[${it.name2}]值不符合要求`)
+        debugger
+        if (this.verificationDate(it.name2)) {
+
+          debugger
+          const { label } = this.column.find(data => data['prop'] == 'name2');
+          it.errorCol.push(label)
+          it.errorRow.push(`字段[${it.name2}]值不符合要求;`)
+
         }
 
         //空的就是全部正确
@@ -241,11 +247,10 @@ export default {
         });
       })
       this.page.errorCol = Array.from(_errorCol);
-      debugger
     },
     //验证日期，
     verificationDate(data) {
-      if (!this.checkDate(it.name1)) {
+      if (!this.checkDate(data)) {
         return false
       } else {
         return true
