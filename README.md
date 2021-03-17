@@ -514,6 +514,62 @@ export const select = {
 ```
 找到路径看代码
 ```
+# 是否删除组件
+### （1）是否删除html代码
+```
+<ys-confirm-button text="删除" :confirmData="scope.row" :confirmIndex="scope.$index" @confirmItem="getConfirm"></ys-confirm-button>
+```
+### （2）组件代码
+```
+<template>
+  <el-popconfirm :popper-append-to-body="false" placement="top-start" :title="`确定${text}?`" cancel-button-text="取消" confirm-button-text="确定" @confirm="handleConfirm">
+    <el-button slot="reference" style="margin-left: 10px" size="mini" type="text">{{ text }}</el-button>
+  </el-popconfirm>
+</template>
+
+<script>
+export default {
+  name: 'ysConfirmButton',
+  props: {
+    text: {
+      type: String,
+      default: '按钮'
+    },
+    confirmData: {
+      type: Object,
+      default() {
+        return {};
+      }
+    },
+    confirmIndex: {
+      type: Number,
+      default() {
+        return null;
+      }
+
+    }
+  },
+  methods: {
+    handleConfirm() {
+      this.$emit('confirmItem', this.confirmData, this.confirmIndex)
+    }
+  }
+}
+</script>
+````
+### （3）加入到项目  src\components\element\confirmButton\index.vue
+```
+import confirmButton from "./confirmButton";
+
+//是否删除
+export const ysConfirmButton = {
+  install: function (Vue) {
+    Vue.component("ysConfirmButton", confirmButton);
+  }
+};
+```
+### （4）第四第五步省略
+
 
 # 指令 placeholder 提示的封装
 

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import "./plugins/element.js";
+import "./plugins/base.js";
 import "./plugins/excel.js";
 import "./plugins/animate.js";
 import './registerServiceWorker'

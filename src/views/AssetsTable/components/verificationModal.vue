@@ -225,10 +225,7 @@ export default {
           it.errorRow.push(`字段[${label}]不能为空;`)
         }
         //不是日期格式
-        debugger
         if (this.verificationDate(it.name2)) {
-
-          debugger
           const { label } = this.column.find(data => data['prop'] == 'name2');
           it.errorCol.push(label)
           it.errorRow.push(`字段[${it.name2}]值不符合要求;`)

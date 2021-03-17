@@ -67,7 +67,7 @@
       </el-table-column>
     </el-table> -->
 
-    <el-table :data="tableAssetsData" stripe row-key="AUTOID" style="width: 100%" @selection-change="handleSelectionChange" @sort-change="OnSortChane">
+    <el-table :data="tableAssetsData" stripe row-key="AUTOID" height="700" style="width: 100%" @selection-change="handleSelectionChange" @sort-change="OnSortChane">
       <el-table-column type="selection" width="55">
       </el-table-column>
       <el-table-column prop="id" label="序号" sortable="custom" width="80">
@@ -86,7 +86,7 @@
         <template slot-scope="scope">
           <el-button type="info" size="mini" @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit">编辑</el-button>
           <el-button type="info" size="mini" @click="handleDetails(scope.$index, scope.row)" icon="el-icon-tickets">详情</el-button>
-          <el-button type="danger" size="mini" @click="handleDel(scope.$index, scope.row)" icon="el-icon-delete">删除</el-button>
+          <ys-confirm-button text="删除" :confirmData="scope.row" :confirmIndex="scope.$index" @confirmItem="getConfirm"></ys-confirm-button>
         </template>
       </el-table-column>
     </el-table>
@@ -178,7 +178,13 @@ export default class AdminContent extends Vue {
   }
 
   //删除功能
-  public handleDel(column, row) {}
+  public handleDel(column, row) {
+    debugger;
+  }
+  public getConfirm(data, index) {
+    console.log(data, index);
+    debugger;
+  }
   //排序
   public OnSortChane({ column, prop, order }, deprop = "id") {
     //本地内存排序

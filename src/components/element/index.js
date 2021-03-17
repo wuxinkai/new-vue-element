@@ -1,5 +1,6 @@
 import dialogComponent from "./dialog";
 import selectComponent from "./select";
+import confirmButton from "./confirmButton";
 import selectTreeComponent from "./selectTree";
 import asidetoggleComponent from "./asidetoggle";
 import elLayoutComponent from "./elLayout";
@@ -12,6 +13,13 @@ export const ysdialog = {
     Vue.component("ysDialog", dialogComponent);
   }
 };
+//是否删除
+export const ysConfirmButton = {
+  install: function (Vue) {
+    Vue.component("ysConfirmButton", confirmButton);
+  }
+};
+
 //下拉菜单
 export const ysSelect = {
   install: function (Vue) {
@@ -55,3 +63,5 @@ export const meiform = {
     Vue.component("ysForm", formComponent);
   }
 };
+
+

@@ -166,6 +166,31 @@ const asyncRoutes = [
         meta: {
           roles: ['admin', 'editor']
         }
+      },
+      {
+        name: '封装组件',
+        path: '/assets',
+        component: () => import('../views/AssetsTable/index.vue'),
+        meta: {
+          roles: ['admin', 'editor']
+        }
+      }
+    ]
+  },
+  {
+    path: '/',
+    component: Home,
+    name: '',
+    iconCls: 'el-icon-star-on',
+    leaf: true,
+    children: [
+      {
+        name: '封装组件',
+        path: '/formDemo',
+        component: () => import('../views/FormDemo/index.vue'),
+        meta: {
+          roles: ['admin', 'editor']
+        }
       }
     ]
   },
