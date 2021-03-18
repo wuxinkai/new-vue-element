@@ -195,6 +195,24 @@ const asyncRoutes = [
     ]
   },
   {
+    path: '/',
+    component: Home,
+    name: '',
+    iconCls: 'el-icon-warning',
+    leaf: true,
+    children: [
+      {
+        name: '跨组件数据双向绑定',
+        path: '/toolDemo',
+        component: () => import('../views/Cross/index.vue'),
+        meta: {
+          roles: ['admin', 'editor']
+        }
+      }
+    ]
+  },
+  
+  {
     path: '*',
     redirect: '/404',  // 重定向到404页面
     hidden: true

@@ -16,5 +16,4 @@ Object.keys(proEx).forEach(item => {  //組件註冊
  * @param {Object} data 参数
  */
 Vue.prototype.$window = proEx.window;
-debugger
 Vue.component(CollapseTransition.name, CollapseTransition);

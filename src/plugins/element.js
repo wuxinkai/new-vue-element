@@ -2,6 +2,7 @@ import Vue from "vue";
 import Element from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import "element-ui/lib/theme-chalk/base.css";
+
 // collapse 展开折叠
 import CollapseTransition from "element-ui/lib/transitions/collapse-transition";
 
