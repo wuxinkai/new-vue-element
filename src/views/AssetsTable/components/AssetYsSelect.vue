@@ -1,19 +1,5 @@
 <template>
-  <ys-select 
-  ref="select" 
-  :selectList="page.DataSource"
-   :idKey="page.DataValueField"
-    :nameKey="page.DataTextField"
-     :pIdKey="page.TreeLevelField" 
-     :cascader="true" 
-     :disabledKey="page.DisabledField"
-      :loading="page.loading" 
-      filterable 
-      emitPath 
-      v-model="page.SelectValue" 
-      v-bind="$attrs"
-       @change="onChange"
-       >
+  <ys-select ref="select" :selectList="page.DataSource" :idKey="page.DataValueField" :nameKey="page.DataTextField" :pIdKey="page.TreeLevelField" :cascader="true" :disabledKey="page.DisabledField" :loading="page.loading" filterable emitPath v-model="page.SelectValue" v-bind="$attrs" @change="onChange">
   </ys-select>
 </template>
 

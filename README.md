@@ -333,6 +333,9 @@ import "./plugins/element.js";
 
 ```
  <asset-ys-select  v-model="form" ></asset-ys-select>
+
+ <!-- 下面等于上面的 -->
+  <asset-ys-select :value="lovingVue" @input="(data) => lovingVue = data" ></asset-ys-select>
 ```
 
 ### 在子组件接收

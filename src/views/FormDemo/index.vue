@@ -57,7 +57,7 @@ export default {
             { label: '男', value: 1 },
             { label: '女', value: 2 }
           ],
-          search: { }
+          search: {}
         },
         {
           title: '类型',
@@ -95,6 +95,13 @@ export default {
     },
     onSubmit(form, valid) {
       debugger
+      const { moreConditions, ...rest } = form
+      //recude报错->moreCoditions未成功获取值或者没判断为undefined的情况
+
+      //数组变对象必学内容
+      const temp = moreConditions.reduce((obj, item) => ({ ...obj, [item.key]: item.value }), {})
+      
+      this.$message.info(`校验结果：${valid} 表单数据：` + JSON.stringify({ ...rest, ...temp }))
     }
   }
 }

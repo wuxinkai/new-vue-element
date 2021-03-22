@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VueRouter, { RawLocation }  from 'vue-router'
+import VueRouter, { RawLocation } from 'vue-router'
 import Login from '../views/Login/index.vue'
 import Home from '../views/Home/index.vue'
 import store from '@/store'
@@ -10,7 +10,7 @@ import { generateRoutes } from './permission'
  */
 const routerPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location: RawLocation) {
-  return (<any>(routerPush.call(this, location))).catch((error: any)=> error)
+  return (<any>(routerPush.call(this, location))).catch((error: any) => error)
 }
 
 Vue.use(VueRouter)
@@ -37,7 +37,7 @@ const routes = [
         component: () => import('../views/Dashboard/index.vue')
       }
     ]
-  }, 
+  },
   {
     path: '/',
     component: Home,
@@ -100,7 +100,7 @@ const asyncRoutes = [
         }
       }
     ]
-  }, 
+  },
   {
     path: '/',
     component: Home,
@@ -166,14 +166,6 @@ const asyncRoutes = [
         meta: {
           roles: ['admin', 'editor']
         }
-      },
-      {
-        name: '封装组件',
-        path: '/assets',
-        component: () => import('../views/AssetsTable/index.vue'),
-        meta: {
-          roles: ['admin', 'editor']
-        }
       }
     ]
   },
@@ -197,21 +189,53 @@ const asyncRoutes = [
   {
     path: '/',
     component: Home,
-    name: '',
+    name: '自定义组件',
     iconCls: 'el-icon-warning',
-    leaf: true,
+    leaf: false, //有没有折叠组件
     children: [
       {
         name: '跨组件数据双向绑定',
         path: '/toolDemo',
-        component: () => import('../views/Cross/index.vue'),
+        component: () => import('../views/Cross/Vattrs/index.vue'),
+        meta: {
+          roles: ['admin', 'editor']
+        }
+      },
+      {
+        name: '自定义v-model',
+        path: '/vModel',
+        component: () => import('../views/Cross/vModel/index.vue'),
+        meta: {
+          roles: ['admin', 'editor']
+        }
+      },
+      {
+        name: '$attr和v-bind 爷传孙',
+        path: '/vAttrs',
+        component: () => import('../views/Cross/Vattrs/index.vue'),
+        meta: {
+          roles: ['admin', 'editor']
+        }
+      },
+      {
+        name: '$listeners孙传爷',
+        path: '/vListeners',
+        component: () => import('../views/Cross/vListeners/index.vue'),
+        meta: {
+          roles: ['admin', 'editor']
+        }
+      },
+      {
+        name: 'provide和inject 爷孙传递',
+        path: '/provideAndInject',
+        component: () => import('../views/Cross/provideAndInject/index.vue'),
         meta: {
           roles: ['admin', 'editor']
         }
       }
     ]
   },
-  
+
   {
     path: '*',
     redirect: '/404',  // 重定向到404页面

@@ -11,6 +11,7 @@
     <el-form-item v-if="hasControl">
       <el-button type="primary" @click="submit">{{ submitText }}</el-button>
       <el-button @click="reset">{{ resetText }}</el-button>
+      <el-button @click="clear">清楚单个校验字段</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -64,9 +65,24 @@ export default {
       return form
     },
     //确认
-    submit() { },
+    submit() {
+      this.$refs.form.validate((valid) => {
+        //此处未获取到ba-select-input的选项值?
+        debugger
+        this.$emit('submit', this.form, valid)
+      })
+    },
     //取消
-    reset() { },
+    reset() {
+      //移除校验结果并重置字段值
+      this.$refs.form.resetFields()
+    },
+    clear() {
+      //清楚所有表单校验数据
+      // this.$refs.form.clearValidate()
+      //只清楚name表单校验
+       this.$refs.form.clearValidate('name'); 
+    },
   }
 }
 </script>

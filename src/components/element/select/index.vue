@@ -74,10 +74,12 @@ export default {
     },
     //从新执行方法 获取文本内容
     getSeleteText() {
+      console.log(this.page.inputVal)
+      debugger
       if (!this.page.inputVal) return;
       if (isArray(this.page.inputVal)) {
         let key = this.selectList.filter(item => {
-          return this.page.inputVal.includes(item[this.idKey]);
+          return this.page.inputVal.includes(item[this.idKey]); //主键是否存在如果存在，就从this.page.inputVal中把name返回给前端
         });
         return key.map(item => {
           return item[this.nameKey];

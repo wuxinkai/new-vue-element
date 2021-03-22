@@ -12,10 +12,11 @@ export default {
     width: String
   },
   model: {
-    prop: "width",
-    event: "change"
+    prop: "width",  //获取
+    event: "change" //设置
   },
   mounted() {
+    //vue增加键盘事件
     this.$el.addEventListener('onkeydown', this.onkeydown)
     this.$el.addEventListener('onkeyup', this.onkeydown)
   },
