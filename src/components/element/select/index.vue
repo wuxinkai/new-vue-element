@@ -75,7 +75,6 @@ export default {
     //从新执行方法 获取文本内容
     getSeleteText() {
       console.log(this.page.inputVal)
-      debugger
       if (!this.page.inputVal) return;
       if (isArray(this.page.inputVal)) {
         let key = this.selectList.filter(item => {

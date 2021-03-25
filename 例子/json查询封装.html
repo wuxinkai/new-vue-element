@@ -73,9 +73,7 @@
   document.getElementById("txtdata").value = JSON.stringify(data);
 
   const search = (val) => {
-    document.getElementById("txtsearch").value = JSON.stringify(
-      data.search(val)
-    );
+    document.getElementById("txtsearch").value = JSON.stringify(  data.search(val) );
   };
   const search1 = () => {
     search({
@@ -100,8 +98,6 @@
     });
   };
   const search4 = () => {
-    search({
-      like: (val) => val.includes("多人合作"),
-    });
+    search({like: (val) => val.includes("多人合作"),});
   };
 </script>

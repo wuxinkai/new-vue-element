@@ -138,18 +138,26 @@ const asyncRoutes = [
   {
     path: '/',
     component: Home,
-    name: '',
+    name: 'js对象常用方法',
     iconCls: 'el-icon-edit-outline',
-    leaf: true,
+    leaf: false,
     children: [
       {
-        name: '富文本',
+        name: 'js更改对象中属性名的方法',
         path: '/tiny',
         component: () => import('../views/Tinymce/index.vue'),
         meta: {
           roles: ['admin', 'editor']
         }
-      }
+      },
+      {
+        name: 'tree结构模糊搜索和列表搜索',
+        path: '/fuzzy',
+        component: () => import('../views/Fuzzy/index.vue'),
+        meta: {
+          roles: ['admin', 'editor']
+        }
+      },
     ]
   },
   {

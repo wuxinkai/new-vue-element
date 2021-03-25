@@ -1,72 +1,64 @@
 <template>
-  <div class="tiny">
-    <!-- 标题 -->
-    <h2>{{ msg }}</h2>
-    <!-- 富文本编辑器组件 -->
-    <tinymce-editor ref="editor"
-      class="tinyEditor"
-      :value="msg"
-      :disabled="disabled"
-      @onClick="onClick">
-    </tinymce-editor>
-    <!-- 功能按钮 -->
-    <div class="tinyFooter">
-      <el-button type="primary" size="medium" plain @click="clear">清空内容</el-button>
-      <el-button type="info" size="medium" plain @click="disabled = !disabled">禁用</el-button>
-    </div>   
-  </div>
+  <el-row>
+    <el-col :span="14">
+      <el-tree :data="newdata3" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
-import TinymceEditor from '@/components/TinymceEditor'
+import { copyTransFunc } from './objectFn'
 export default {
   components: {
-    TinymceEditor
+
   },
-  data () {
+  data() {
     return {
-      msg: 'Welcome to Use Tinymce Editor',
-      disabled: false
+      newdata3: [],
+      //原始数据
+      arr: [
+        {
+          id: 275,
+          name: "测试公司", //改成text
+          userList: [ // 改成 children
+            {
+              id: 697,
+              userName: "11111" //text
+            }
+          ]
+        }, {
+          id: 327,
+          name: "有限公司",
+          userList: [
+            {
+              id: 743,
+              userName: "张三"
+            }, {
+              id: 744,
+              userName: "李四"
+            }
+          ]
+        }
+      ],
+      // 动态修改name为text，userName也修改为text，userList为children
+      // 可以根据配置去改变参数
+      trans: [{ key: "name", value: "text" }, { key: "userName", value: "text" }, { key: "userList", value: "chilren" }]
     }
   },
-  methods: {
-    // 鼠标单击的事件
-    onClick (e, editor) {
-      console.log('Element clicked')
-      console.log(e)
-      console.log(editor)
-    },
-    // 清空内容
-    clear () {
-      this.$refs.editor.clear()
-    }
+  mounted() {
+    let newdata = copyTransFunc(this.arr, this.trans)
+    console.log(newdata)
+
+
+    let copyAry = Array.from(this.arr);
+    let newdata1 = JSON.parse(JSON.stringify(copyAry).replace(/name/g, `label`));
+    let newdata2 = JSON.parse(JSON.stringify(newdata1).replace(/userName/g, `label`));
+    let newdata3 = JSON.parse(JSON.stringify(newdata2).replace(/userList/g, `children`));
+    console.log(newdata3)
+    this.newdata3 = newdata3
   }
 }
 </script>
 
 <style lang="less" scoped>
-.tiny {
-  width: 100%;
-  min-height: 85%;
-  margin: 20px 0;
-  border: 1px solid rgba(173,216,230, 1);
-  background-color: #fff;
-  overflow: auto;
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: space-around;
-  align-items: center;
-
-  &Editor {
-    width: 80%;
-  }
-
-  &Footer {
-    width: 80%;
-    // border: 1px solid red;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
-  }
-}
 </style>

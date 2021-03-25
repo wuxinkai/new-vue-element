@@ -3,7 +3,7 @@ const app = {
   state: {
     rememberPass: true,  // 是否记住密码
     isFold: false,  // 侧边导航栏是否折叠
-    percentage: 30,  // VuexRelated部分进度条百分比
+    percentage: 40,  // VuexRelated部分进度条百分比
     routerPaths: ""  // 记录路由历史相关
   },
 
